@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<title>INBEFIC | Iniciar sesión</title>
+<style>
+  :root {
+    --bg: #fafafa;
+    --text: #111;
+    --muted: #6b7280;
+    --btn-dark: #111;
+    --btn-dark-hover: #222;
+    --btn-light: #f3f4f6;
+    --btn-light-hover: #e5e7eb;
+    --radius: 999px;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+  }
+
+  /* ========== LAYOUT BASE (móvil = captura) ========== */
+  .page {
+    width: 100%;
+    max-width: 420px;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px 40px;
+    text-align: center;
+  }
+
+  /* Logo principal — cambia el archivo logo-orb.svg (o .png / .webp) */
+  .orb-wrap {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin-bottom: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .orb-img {
+    width: 120px;
+    height: auto;
+    max-height: 110px;
+    object-fit: contain;
+    animation: float 4s ease-in-out infinite;
+    filter: drop-shadow(0 12px 24px rgba(0, 31, 116, 0.726));
+    display: block;
+  }
+
+  .orb-glow {
+    position: absolute;
+    inset: -20%;
+    background: radial-gradient(circle, rgba(45, 212, 191, 0.25) 0%, transparent 65%);
+    animation: pulse 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.08); }
+  }
+
+  .headline {
+    font-size: 1.65rem;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+    max-width: 320px;
+  }
+  .headline .brand {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    margin: 0 2px;
+  }
+  /* Logo del título — cambia el archivo logo-icon.svg (o .png / .webp) */
+  .headline .brand-icon-img {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+    box-shadow: 0 2px 8px rgba(6, 182, 212, 0.35);
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 40px;
+  }
+
+  .auth-buttons {
+    width: 100%;
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px 20px;
+    border-radius: var(--radius);
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+  }
+  .btn:active { transform: scale(0.98); }
+
+  .btn-google {
+    background:   
+      linear-gradient(245deg,
+        #132af7fb 0%,
+        #00001b 20%,
+        #0d02a0 32%,
+        #000000fd 100%);
+    color: #fff;
+  }
+  .btn-google:hover {
+    background: var(--btn-dark-hover);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  }
+  .btn-google .g-logo {
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    color: #4285f4;
+  }
+
+  .btn-apple {
+    background: var(--btn-light);
+    color: var(--text);
+  }
+  .btn-apple:hover {
+    background: var(--btn-light-hover);
+  }
+  .btn-apple svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .btn-email {
+    background: transparent;
+    color: var(--muted);
+    font-weight: 500;
+    padding: 10px;
+  }
+  .btn-email:hover {
+    color: var(--text);
+  }
+  .btn-email svg {
+    width: 18px;
+    height: 18px;
+    opacity: 0.7;
+  }
+
+  /* Formulario email (oculto por defecto) */
+  .email-form {
+    display: none;
+    width: 100%;
+    max-width: 340px;
+    margin-top: 8px;
+    text-align: left;
+    animation: fadeUp 0.3s ease;
+  }
+  .email-form.visible {
+    display: block;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .email-form label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .email-form .field {
+    margin-bottom: 14px;
+  }
+  .email-form input {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    background: #fff;
+  }
+  .email-form input:focus {
+    border-color: #000855;
+    box-shadow: 0 0 0 3px rgba(0, 8, 85, 0.15);
+  }
+  .email-form input.error {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+  }
+  .email-form input.valid {
+    border-color: #080053;
+  }
+  .email-form .error-msg {
+    display: none;
+    font-size: 0.78rem;
+    color: #ef4444;
+    margin-top: 5px;
+    line-height: 1.3;
+  }
+  .email-form .error-msg.visible {
+    display: block;
+  }
+  .email-form .hint {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    margin-top: 4px;
+  }
+  .email-form .pass-strength {
+    display: flex;
+    gap: 4px;
+    margin-top: 8px;
+    height: 4px;
+  }
+  .email-form .pass-strength span {
+    flex: 1;
+    border-radius: 2px;
+    background: #e5e7eb;
+    transition: background 0.2s;
+  }
+  .email-form .pass-strength.weak span:nth-child(1) { background: #ef4444; }
+  .email-form .pass-strength.fair span:nth-child(1),
+  .email-form .pass-strength.fair span:nth-child(2) { background: #f59e0b; }
+  .email-form .pass-strength.good span:nth-child(1),
+  .email-form .pass-strength.good span:nth-child(2),
+  .email-form .pass-strength.good span:nth-child(3) { background: #84cc16; }
+  .email-form .pass-strength.strong span { background: #22c55e; }
+  .email-form .strength-label {
+    font-size: 0.72rem;
+    color: #9ca3af;
+    margin-top: 4px;
+  }
+  .email-form .btn-submit {
+      background:   
+      linear-gradient(245deg,
+        #132af7fb 0%,
+        #00001b 20%,
+        #0d02a0 32%,
+        #000000fd 100%);
+    color: #fff;
+    margin-top: 4px;
+    font: size 3.67rem;
+
+  }
+  .email-form .btn-submit:hover:not(:disabled) {
+    box-shadow: 0 4px 14px rgba(20, 184, 166, 0.4);
+  }
+  .email-form .btn-submit:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    
+  }
+  .email-form .form-alert {
+    display: none;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+    line-height: 1.35;
+  }
+  .email-form .form-alert.visible { display: block; }
+  .email-form .form-alert.error {
+    background: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+  }
+  .email-form .form-alert.success {
+    background: #f0fdf4;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+  }
+  .email-form .back-link {
+    display: block;
+    text-align: center;
+    margin-top: 14px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: inherit;
+  }
+  .email-form .back-link:hover { color: var(--text); }
+
+  .footer-note {
+    margin-top: 28px;
+    font-size: 0.75rem;
+    color: #9ca3af;
+    max-width: 280px;
+    line-height: 1.4;
+  }
+  .footer-note a {
+    color: #6b7280;
+    text-decoration: underline;
+  }
+
+  /* ========== PC / DESKTOP: diseño diferente ========== */
+  @media (min-width: 900px) {
+    body {
+      background:
+        radial-gradient(ellipse 60% 50% at 15% 50%, rgba(45, 212, 191, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 85% 30%, rgba(163, 230, 53, 0.1) 0%, transparent 55%),
+        #f8fafc;
+    }
+
+    .page {
+      max-width: 1100px;
+      min-height: auto;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 60px;
+      padding: 48px 56px;
+      text-align: left;
+      background: #ffffff00;
+      border-radius: 28px;
+      box-shadow:
+        0 25px 60px -20px rgba(0, 0, 0, 0.884),
+        0 0 0 1px rgba(0, 0, 0, 0.39);
+      margin: 40px;
+    }
+
+    .left-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .orb-wrap {
+      width: 200px;
+      height: 200px;
+      margin-bottom: 28px;
+      background:rgba(255, 255, 255, 0);
+    }
+    .orb-img {
+      width: 170px;
+      max-height: 150px;
+      mix-blend-mode: multiply;
+      background:rgba(255, 255, 255, 0);
+      
+    }
+
+    .headline {
+      font-size: 2.4rem;
+      max-width: 420px;
+      margin-bottom: 14px;
+    }
+    .headline .brand-icon-img {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      margin-bottom: 0;
+    }
+
+    .right-panel {
+      flex: 0 0 340px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 28px 24px;
+      background: #f9fafb;
+      border-radius: 20px;
+      border: 1px solid #eef0f3;
+    }
+
+    .right-panel .auth-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+    .right-panel .auth-sub {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .auth-buttons {
+      max-width: none;
+    }
+
+    .footer-note {
+      margin-top: 20px;
+      max-width: none;
+      text-align: center;
+    }
+
+    /* En desktop el subtítulo del centro se oculta (va al panel derecho) */
+    .subtitle-mobile { display: none; }
+  }
+
+  /* En móvil no hay paneles separados */
+  @media (max-width: 899px) {
+    .left-panel,
+    .right-panel {
+      width: 100%;
+      display: contents;
+    }
+    .auth-title,
+    .auth-sub {
+      display: none;
+    }
+  }
+
+  /* ========== REGISTRO ========== */
+  .email-form select {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    outline: none;
+    background: #fff;
+    color: var(--text);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .email-form select:focus { border-color: #000855; box-shadow: 0 0 0 3px rgba(0, 8, 85, 0.15); }
+  .email-form select.error { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12); }
+  .email-form select.valid { border-color: #080053; }
+
+  .register-form { max-width: none; }
+  .register-form .reg-head { text-align: center; margin-bottom: 18px; }
+  .register-form .reg-head h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
+  .register-form .reg-head p { font-size: 0.85rem; color: var(--muted); }
+
+  .fields-grid { display: grid; grid-template-columns: 1fr; column-gap: 14px; }
+  .fields-grid .full, .fields-grid .group-title { grid-column: 1 / -1; }
+  .fields-grid.enter { animation: fadeUp 0.3s ease; }
+  .group-title {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.82rem; font-weight: 700; color: #000855;
+    margin: 6px 0 12px;
+  }
+  .group-title::after { content: ""; flex: 1; height: 1px; background: #e5e7eb; }
+
+  .email-form label.check {
+    display: flex; gap: 8px; align-items: flex-start;
+    font-weight: 500; font-size: 0.82rem; margin-bottom: 0;
+  }
+  .email-form .check input { width: auto; padding: 0; margin-top: 2px; }
+  .email-form .check a { color: var(--muted); }
+
+  .page.registering .auth-title,
+  .page.registering .auth-sub { display: none; }
+
+  @media (min-width: 720px) {
+    .page.registering .right-panel { flex: 0 0 600px; }
+    .page.registering .left-panel { min-width: 0; }
+    .page.registering .fields-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 720px) {
+    .page.registering { justify-content: flex-start; }
+    .page.registering .left-panel { display: none; }
+  }
+
+  #btnEmail, #emailForm, #registerForm { display: none !important; }
+  #authButtons[hidden] { display: none !important; }
+  .google-register-panel {
+    width: 100%;
+    max-width: 440px;
+    margin: 0 auto;
+    padding: 22px;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 8px 25px rgba(0,0,0,.06);
+  }
+  .google-register-panel[hidden] { display: none !important; }
+  .google-register-panel h2 { margin: 0 0 8px; font-size: 1.35rem; }
+  .google-register-panel p { margin: 0 0 16px; color: var(--muted); font-size: .9rem; line-height: 1.5; }
+  .google-register-panel label { display: block; margin-bottom: 7px; font-weight: 650; }
+  .google-register-panel select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: #fff;
+    color: #111827;
+    font: inherit;
+  }
+  .google-register-panel .role-warning { color: #8a5610; }
+  .google-register-panel .back-link { display: block; margin: 12px auto 0; }
+  .google-register-panel .google-register-error { min-height: 20px; margin: 0 0 10px; color: #b42318; }
+</style>
+</head>
+<body>
+
+  <div class="page container">
+    <div class="left-panel">
+      <div class="orb-wrap">
+        <div class="orb-glow"></div>
+        <!-- Cambia logo-orb.svg por tu imagen (png, jpg, webp o svg) -->
+        <img class="orb-img" src="Sinfondoinsignia.png" alt="Logo" width="120" height="100">
+      </div>
+
+      <h1 class="headline">
+        Del pensamiento a la aplicación</h1>
+      
+        <span class="brand">
+      
+        </span>
+        <br>
+       A solo unos segundos de distancia.
+      </h1>
+
+      <p class="subtitle subtitle-mobile">Inicia sesión para empezar a crear</p>
+    </div>
+
+    <div class="right-panel">
+      <div class="auth-title">Bienvenido de nuevo</div>
+      <p class="auth-sub">Inicia sesión para empezar a construir</p>
+
+      <div class="auth-buttons" id="authButtons">
+        <button type="button" class="btn btn-google" id="btnGoogle">
+          <span class="g-logo"><svg xmlns="http://w3.org" viewBox="0 0 24 24" width="100%" height="100%">
+  <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v3.92h6.61c-.29 1.5-1.14 2.77-2.4 3.63v3h3.86c2.26-2.09 3.67-5.17 3.67-8.48z"/>
+  <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.29v3.09C3.26 21.3 7.31 24 12 24z"/>
+  <path fill="#FBBC05" d="M5.27 14.29a7.18 7.18 0 0 1 0-4.58V6.62H1.29a11.94 11.94 0 0 0 0 10.76l3.98-3.09z"/>
+  <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.98 3.09c.95-2.85 3.6-4.96 6.73-4.96z"/>
+</svg></span>
+          Continuar con Google
+        </button>
+
+        <button type="button" class="btn btn-apple" id="btnApple">
+         <svg xmlns="http://w3.org" viewBox="0 0 24 24" width="200" height="200" fill="#000000">
+  <!-- Silueta del usuario -->
+  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+  <!-- Símbolo de suma (+) que representa la acción de registrar / añadir -->
+  <path d="M19 8h-2v3h-3v2h3v3h2v-3h3v-2h-3z"/>
+</svg>
+
+          Crear perfil con Google
+        </button>
+
+        <button type="button" class="btn btn-email" id="btnEmail">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          Iniciar sesión con correo
+        </button>
+
+       
+      </div>
+
+      <form class="email-form" id="emailForm" novalidate>
+        <div class="form-alert" id="formAlert" role="alert"></div>
+
+        <div class="field">
+          <label for="emailInput">Email</label>
+          <input
+            type="email"
+            id="emailInput"
+            name="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            inputmode="email"
+            aria-describedby="emailError"
+            aria-invalid="false"
+          >
+          <div class="error-msg" id="emailError" role="alert"></div>
+        </div>
+
+        <div class="field">
+          <label for="passInput">Contraseña</label>
+          <input
+            type="password"
+            id="passInput"
+            name="password"
+            placeholder="••••••••"
+            autocomplete="current-password"
+            aria-describedby="passError"
+            aria-invalid="false"
+          >
+          <div class="pass-strength" id="passStrength" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <div class="strength-label" id="strengthLabel"></div>
+          <div class="error-msg" id="passError" role="alert"></div>
+          <div class="hint">Mínimo 8 caracteres, con letra y número</div>
+        </div>
+
+        <button type="submit" class="btn btn-submit" id="btnSubmit">Iniciar sesión</button>
+        <button type="button" class="back-link" id="btnBack">← Volver a las opciones</button>
+      </form>
+
+      <form class="email-form register-form" id="registerForm" novalidate>
+        <div class="reg-head">
+          <h2>Crea tu cuenta</h2>
+          <p>Completa tus datos y elige tu cargo</p>
+        </div>
+        <div class="form-alert" id="regAlert" role="alert"></div>
+
+        <div class="fields-grid" id="personalBox"></div>
+        <div class="fields-grid" id="cargoBox"></div>
+        <div class="fields-grid" id="roleBox"></div>
+        <div class="fields-grid" id="accountBox"></div>
+
+        <div class="field">
+          <label class="check"><input type="checkbox" id="r_terminos">
+            <span>Acepto los <a href="#">Términos</a> y la <a href="#">Política de Privacidad</a>.</span></label>
+          <div class="error-msg" id="r_terminos_err" role="alert"></div>
+        </div>
+
+        <button type="submit" class="btn btn-submit" id="btnRegSubmit">Crear cuenta</button>
+        <button type="button" class="back-link" id="linkLogin">¿Ya tienes cuenta? Inicia sesión</button>
+        <button type="button" class="back-link" id="btnRegBack">← Volver a las opciones</button>
+      </form>
+
+      <div class="google-register-panel" id="googleRegisterPanel" hidden>
+        <h2>Crea tu perfil</h2>
+        <p>Selecciona tu cargo y continúa con tu cuenta de Google. Google confirmará tu correo y nombre.</p>
+        <label for="googleRegisterRole">Cargo en la institución</label>
+        <select id="googleRegisterRole" required>
+          <option value="">Selecciona un cargo</option>
+          <option value="directora">Directora</option>
+          <option value="subdirectora">Subdirectora</option>
+          <option value="docente">Docente</option>
+          <option value="estudiante">Estudiante</option>
+          <option value="secretaria">Secretaría</option>
+        </select>
+        <p class="role-warning">El cargo elegido se activa inmediatamente en esta versión. Cualquier persona puede seleccionar un cargo administrativo.</p>
+        <p class="google-register-error" id="googleRegisterError" role="alert"></p>
+        <button type="button" class="btn btn-submit" id="btnContinueGoogleRegister">Continuar con Google</button>
+        <button type="button" class="back-link" id="btnCancelGoogleRegister">← Volver a las opciones</button>
+      </div>
+
+<p class="footer-note">
+        Al continuar, aceptas nuestros <a href="#">Términos</a> y <a href="#">Política de Privacidad</a>.
+      </p>
+    </div>
+  </div>
+
+<script>
+(function () {
+  const authButtons = document.getElementById('authButtons');
+  const emailForm = document.getElementById('emailForm');
+  const btnEmail = document.getElementById('btnEmail');
+  const btnBack = document.getElementById('btnBack');
+  const btnGoogle = document.getElementById('btnGoogle');
+  const btnApple = document.getElementById('btnApple');
+  const emailInput = document.getElementById('emailInput');
+  const passInput = document.getElementById('passInput');
+  const emailError = document.getElementById('emailError');
+  const passError = document.getElementById('passError');
+  const formAlert = document.getElementById('formAlert');
+  const passStrength = document.getElementById('passStrength');
+  const strengthLabel = document.getElementById('strengthLabel');
+  const btnSubmit = document.getElementById('btnSubmit');
+
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  /* ---------- UI helpers ---------- */
+  function showToast(msg) {
+    let t = document.getElementById('toast');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'toast';
+      t.style.cssText =
+        'position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);' +
+        'background:#111;color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;' +
+        'opacity:0;transition:all .25s;z-index:100;pointer-events:none;max-width:90vw;text-align:center;';
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.style.opacity = '1';
+    t.style.transform = 'translateX(-50%) translateY(0)';
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => {
+      t.style.opacity = '0';
+      t.style.transform = 'translateX(-50%) translateY(20px)';
+    }, 2400);
+  }
+
+  function setFieldError(input, errorEl, message) {
+    if (message) {
+      input.classList.add('error');
+      input.classList.remove('valid');
+      input.setAttribute('aria-invalid', 'true');
+      errorEl.textContent = message;
+      errorEl.classList.add('visible');
+    } else {
+      input.classList.remove('error');
+      input.setAttribute('aria-invalid', 'false');
+      errorEl.textContent = '';
+      errorEl.classList.remove('visible');
+    }
+  }
+
+  function setFieldValid(input) {
+    input.classList.remove('error');
+    input.classList.add('valid');
+    input.setAttribute('aria-invalid', 'false');
+  }
+
+  function showFormAlert(type, message) {
+    formAlert.className = 'form-alert visible ' + type;
+    formAlert.textContent = message;
+  }
+
+  function hideFormAlert() {
+    formAlert.className = 'form-alert';
+    formAlert.textContent = '';
+  }
+
+  function resetFormUI() {
+    hideFormAlert();
+    setFieldError(emailInput, emailError, '');
+    setFieldError(passInput, passError, '');
+    emailInput.classList.remove('valid', 'error');
+    passInput.classList.remove('valid', 'error');
+    passStrength.className = 'pass-strength';
+    strengthLabel.textContent = '';
+    emailForm.reset();
+  }
+
+  /* ---------- Validation rules ---------- */
+  function validateEmail(value, { required = true } = {}) {
+    const v = value.trim();
+    if (!v) {
+      return required ? 'El correo es obligatorio.' : '';
+    }
+    if (v.length > 254) {
+      return 'El correo es demasiado largo.';
+    }
+    if (!EMAIL_RE.test(v)) {
+      return 'Introduce un correo válido (ej. nombre@dominio.com).';
+    }
+    // Dominios claramente inválidos
+    if (/\.\./.test(v) || v.startsWith('.') || v.endsWith('.')) {
+      return 'El formato del correo no es válido.';
+    }
+    return '';
+  }
+
+  function passwordStrength(value) {
+    let score = 0;
+    if (value.length >= 8) score++;
+    if (value.length >= 12) score++;
+    if (/[a-z]/.test(value) && /[A-Z]/.test(value)) score++;
+    if (/\d/.test(value)) score++;
+    if (/[^A-Za-z0-9]/.test(value)) score++;
+    if (score <= 1) return { level: 'weak', label: 'Débil' };
+    if (score === 2) return { level: 'fair', label: 'Regular' };
+    if (score === 3) return { level: 'good', label: 'Buena' };
+    return { level: 'strong', label: 'Fuerte' };
+  }
+
+  function validatePassword(value, { required = true } = {}) {
+    if (!value) {
+      return required ? 'La contraseña es obligatoria.' : '';
+    }
+    if (value.length < 8) {
+      return 'La contraseña debe tener al menos 8 caracteres.';
+    }
+    if (value.length > 128) {
+      return 'La contraseña es demasiado larga.';
+    }
+    if (!/[A-Za-z]/.test(value)) {
+      return 'Debe incluir al menos una letra.';
+    }
+    if (!/\d/.test(value)) {
+      return 'Debe incluir al menos un número.';
+    }
+    return '';
+  }
+
+  /* ---------- Live validation ---------- */
+  emailInput.addEventListener('blur', () => {
+    const err = validateEmail(emailInput.value);
+    if (err) {
+      setFieldError(emailInput, emailError, err);
+    } else if (emailInput.value.trim()) {
+      setFieldError(emailInput, emailError, '');
+      setFieldValid(emailInput);
+    }
+  });
+
+  emailInput.addEventListener('input', () => {
+    if (emailInput.classList.contains('error')) {
+      const err = validateEmail(emailInput.value);
+      if (!err) {
+        setFieldError(emailInput, emailError, '');
+        setFieldValid(emailInput);
+      }
+    }
+    hideFormAlert();
+  });
+
+  passInput.addEventListener('input', () => {
+    const value = passInput.value;
+    hideFormAlert();
+
+    if (value.length === 0) {
+      passStrength.className = 'pass-strength';
+      strengthLabel.textContent = '';
+      setFieldError(passInput, passError, '');
+      passInput.classList.remove('valid');
+      return;
+    }
+
+    const { level, label } = passwordStrength(value);
+    passStrength.className = 'pass-strength ' + level;
+    strengthLabel.textContent = 'Seguridad: ' + label;
+
+    const err = validatePassword(value);
+    if (err) {
+      setFieldError(passInput, passError, err);
+    } else {
+      setFieldError(passInput, passError, '');
+      setFieldValid(passInput);
+    }
+  });
+
+  passInput.addEventListener('blur', () => {
+    const err = validatePassword(passInput.value);
+    if (err) setFieldError(passInput, passError, err);
+  });
+
+  /* ---------- Submit ---------- */
+  emailForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    showFormAlert('error', 'Inicia sesión únicamente con el botón de Google.');
+  });
+
+  /* ---------- Navegación entre vistas ---------- */
+  const $ = id => document.getElementById(id);
+  const page = document.querySelector('.page');
+  const registerForm = $('registerForm');
+
+  function showView(view) {
+    authButtons.style.display = view === 'options' ? 'flex' : 'none';
+    emailForm.classList.toggle('visible', view === 'login');
+    registerForm.classList.toggle('visible', view === 'register');
+    page.classList.toggle('registering', view === 'register');
+    if (view === 'login') { resetFormUI(); emailInput.focus(); }
+    if (view === 'register') { resetRegister(); }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  btnEmail.addEventListener('click', () => showView('login'));
+  btnBack.addEventListener('click', () => showView('options'));
+  btnApple.addEventListener('click', () => showView('register'));   // botón "Registrarse"
+  $('btnRegBack').addEventListener('click', () => showView('options'));
+  $('linkLogin').addEventListener('click', () => showView('login'));
+  btnGoogle.addEventListener('click', () => showToast('Redirigiendo a Google…'));
+
+  /* ---------- REGISTRO: definición de campos ---------- */
+  const RE_NOMBRE = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ' .-]{2,60}$/;
+  const RE_DUI = /^\d{8}-?\d$/;
+  const RE_TEL = /^[0-9+\-\s]{8,15}$/;
+  const RE_NIE = /^\d{5,12}$/;
+  const RE_COD = /^[A-Za-z0-9\-]{3,12}$/;
+  const RE_SEC = /^[A-Za-z0-9]{1,3}$/;
+  const RE_TXT = /^.{3,100}$/;
+
+  const TURNOS = ['Matutino', 'Vespertino', 'Nocturno', 'Tiempo completo'];
+  const ESTUDIOS = ['Bachillerato', 'Técnico', 'Profesorado', 'Licenciatura', 'Ingeniería', 'Maestría', 'Doctorado'];
+  const NIVELES = ['Parvularia', 'Básica (1° a 9° grado)', 'Media (bachillerato)', 'Todos los niveles'];
+  const GRADOS = ['Parvularia', '1° grado', '2° grado', '3° grado', '4° grado', '5° grado', '6° grado',
+    '7° grado', '8° grado', '9° grado', '1° año de bachillerato', '2° año de bachillerato', '3° año de bachillerato'];
+
+  const DUI = { id: 'dui', label: 'DUI', type: 'text', placeholder: '00000000-0', inputmode: 'numeric', maxlength: 10, pattern: RE_DUI, msg: 'Formato de DUI: 00000000-0.' };
+  const INST = { id: 'institucion', label: 'Institución educativa', type: 'text', full: true, placeholder: 'Nombre del centro escolar', pattern: RE_TXT, msg: 'Escribe el nombre completo de la institución.' };
+  const COD = { id: 'codigo', label: 'Código de infraestructura', type: 'text', placeholder: 'Ej. 12345', pattern: RE_COD, msg: 'Código no válido (letras, números o guion).' };
+  const ANIOS = { id: 'anios', label: 'Años de experiencia', type: 'number', min: 0, max: 50, placeholder: '0' };
+  const TURNO = { id: 'turno', label: 'Turno', type: 'select', options: TURNOS };
+  const ESTUDIO = { id: 'estudios', label: 'Último grado académico', type: 'select', options: ESTUDIOS };
+
+  const PERSONAL = [
+    { group: 'Datos personales' },
+    { id: 'nombres', label: 'Nombres', type: 'text', autocomplete: 'given-name', pattern: RE_NOMBRE, msg: 'Usa solo letras (mínimo 2).' },
+    { id: 'apellidos', label: 'Apellidos', type: 'text', autocomplete: 'family-name', pattern: RE_NOMBRE, msg: 'Usa solo letras (mínimo 2).' },
+    { id: 'nacimiento', label: 'Fecha de nacimiento', type: 'date', autocomplete: 'bday' },
+    { id: 'genero', label: 'Sexo', type: 'select', options: ['Femenino', 'Masculino'] },
+    { id: 'telefono', label: 'Teléfono', type: 'tel', placeholder: '7000-0000', inputmode: 'tel', autocomplete: 'tel', pattern: RE_TEL, msg: 'Ingresa un teléfono válido.' },
+    { id: 'correo', label: 'Correo electrónico', type: 'email', placeholder: 'nombre@dominio.com', inputmode: 'email', autocomplete: 'email' }
+  ];
+
+  const CARGO = [
+    { group: 'Tu cargo' },
+    {
+      id: 'cargo', label: 'Cargo en la institución', type: 'select', full: true,
+      options: [['directora', 'Directora'], ['subdirectora', 'Subdirectora'], ['docente', 'Docente'],
+                ['estudiante', 'Estudiante'], ['secretaria', 'Secretaria']],
+      hint: 'Elige tu cargo para ver los campos que te corresponden.'
+    }
+  ];
+
+  const ROLES = {
+    directora: [
+      { group: 'Datos de la dirección' }, DUI, INST, COD,
+      { id: 'nivel', label: 'Nivel que dirige', type: 'select', options: NIVELES },
+      ESTUDIO, { ...ANIOS, label: 'Años en el cargo de dirección' }
+    ],
+    subdirectora: [
+      { group: 'Datos de la subdirección' }, DUI, INST, COD,
+      { id: 'area', label: 'Área a cargo', type: 'select', options: ['Académica', 'Administrativa', 'Disciplina', 'Pedagógica'] },
+      TURNO, ESTUDIO, { ...ANIOS, label: 'Años en el cargo' }
+    ],
+    docente: [
+      { group: 'Datos del docente' }, DUI, INST, COD,
+      { id: 'especialidad', label: 'Especialidad o asignatura(s)', type: 'text', full: true, placeholder: 'Ej. Matemática, Lenguaje', pattern: RE_TXT, msg: 'Indica tu especialidad o asignaturas.' },
+      { id: 'nivel', label: 'Nivel que atiende', type: 'select', options: NIVELES },
+      TURNO, ESTUDIO, ANIOS,
+      { id: 'grado_guia', label: 'Grado como docente guía', type: 'select', required: false, options: GRADOS },
+      { id: 'seccion_guia', label: 'Sección guía', type: 'text', required: false, placeholder: 'A', maxlength: 3, pattern: RE_SEC, msg: 'Máximo 3 letras o números.' }
+    ],
+    estudiante: [
+      { group: 'Datos del estudiante' },
+      { id: 'nie', label: 'NIE (Número de Identificación Estudiantil)', type: 'text', full: true, inputmode: 'numeric', pattern: RE_NIE, msg: 'Ingresa un NIE válido (solo números).' },
+      INST,
+      { id: 'grado', label: 'Grado que cursa', type: 'select', options: GRADOS },
+      { id: 'seccion', label: 'Sección', type: 'text', placeholder: 'A', maxlength: 3, pattern: RE_SEC, msg: 'Máximo 3 letras o números.' },
+      TURNO,
+      { group: 'Datos del responsable' },
+      { id: 'resp_nombre', label: 'Nombre completo del responsable', type: 'text', full: true, pattern: RE_NOMBRE, msg: 'Usa solo letras (mínimo 2).' },
+      { id: 'parentesco', label: 'Parentesco', type: 'select', options: ['Madre', 'Padre', 'Abuelo/a', 'Tío/a', 'Hermano/a', 'Otro'] },
+      { id: 'resp_tel', label: 'Teléfono del responsable', type: 'tel', inputmode: 'tel', placeholder: '7000-0000', pattern: RE_TEL, msg: 'Ingresa un teléfono válido.' },
+      { ...DUI, id: 'resp_dui', label: 'DUI del responsable', required: false }
+    ],
+    secretaria: [
+      { group: 'Datos de secretaría' }, DUI, INST, COD,
+      { id: 'area', label: 'Área de trabajo', type: 'select', options: ['Registro académico', 'Administración', 'Atención al público', 'Archivo y documentos'] },
+      TURNO, ESTUDIO, ANIOS
+    ]
+  };
+
+  const ACCOUNT = [
+    { group: 'Datos de la cuenta' },
+    { id: 'clave', label: 'Contraseña', type: 'password', full: true, autocomplete: 'new-password', meter: true, hint: 'Mínimo 8 caracteres, con letra y número' },
+    { id: 'confirmar', label: 'Confirmar contraseña', type: 'password', full: true, autocomplete: 'new-password' }
+  ];
+
+  /* ---------- REGISTRO: render ---------- */
+  let fieldMap = {};
+
+  function renderFields(container, defs) {
+    container.innerHTML = '';
+    defs.forEach(d => {
+      if (d.group) {
+        const g = document.createElement('div');
+        g.className = 'group-title';
+        g.textContent = d.group;
+        container.appendChild(g);
+        return;
+      }
+      fieldMap[d.id] = d;
+      const wrap = document.createElement('div');
+      wrap.className = 'field' + (d.full ? ' full' : '');
+
+      const label = document.createElement('label');
+      label.htmlFor = 'r_' + d.id;
+      label.textContent = d.label + (d.required === false ? ' (opcional)' : '');
+      wrap.appendChild(label);
+
+      let el;
+      if (d.type === 'select') {
+        el = document.createElement('select');
+        const ph = document.createElement('option');
+        ph.value = ''; ph.textContent = 'Selecciona…';
+        el.appendChild(ph);
+        d.options.forEach(o => {
+          const [val, txt] = Array.isArray(o) ? o : [o, o];
+          const op = document.createElement('option');
+          op.value = val; op.textContent = txt;
+          el.appendChild(op);
+        });
+      } else {
+        el = document.createElement('input');
+        el.type = d.type;
+        if (d.placeholder) el.placeholder = d.placeholder;
+        if (d.inputmode) el.inputMode = d.inputmode;
+        if (d.maxlength) el.maxLength = d.maxlength;
+        if (d.type === 'number') { el.min = d.min; el.max = d.max; }
+        if (d.type === 'date') el.max = new Date().toISOString().split('T')[0];
+      }
+      el.id = 'r_' + d.id;
+      el.name = d.id;
+      el.dataset.fid = d.id;
+      if (d.autocomplete) el.autocomplete = d.autocomplete;
+      el.setAttribute('aria-invalid', 'false');
+      wrap.appendChild(el);
+
+      if (d.meter) {
+        wrap.insertAdjacentHTML('beforeend',
+          '<div class="pass-strength" id="r_meter" aria-hidden="true"><span></span><span></span><span></span><span></span></div>' +
+          '<div class="strength-label" id="r_meterLabel"></div>');
+      }
+      const err = document.createElement('div');
+      err.className = 'error-msg';
+      err.id = 'r_' + d.id + '_err';
+      err.setAttribute('role', 'alert');
+      wrap.appendChild(err);
+      if (d.hint) {
+        const h = document.createElement('div');
+        h.className = 'hint';
+        h.textContent = d.hint;
+        wrap.appendChild(h);
+      }
+      container.appendChild(wrap);
+    });
+  }
+
+  function resetRegister() {
+    registerForm.reset();
+    fieldMap = {};
+    $('regAlert').className = 'form-alert';
+    $('regAlert').textContent = '';
+    $('r_terminos_err').classList.remove('visible');
+    $('btnRegSubmit').disabled = false;
+    $('btnRegSubmit').textContent = 'Crear cuenta';
+    renderFields($('personalBox'), PERSONAL);
+    renderFields($('cargoBox'), CARGO);
+    $('roleBox').innerHTML = '';
+    renderFields($('accountBox'), ACCOUNT);
+  }
+
+  /* ---------- REGISTRO: validación ---------- */
+  function edad(iso) {
+    const n = new Date(iso), h = new Date();
+    let a = h.getFullYear() - n.getFullYear();
+    const m = h.getMonth() - n.getMonth();
+    if (m < 0 || (m === 0 && h.getDate() < n.getDate())) a--;
+    return a;
+  }
+
+  function validateDef(d, val) {
+    const v = d.type === 'password' ? (val || '') : (val || '').trim();
+    if (!v) {
+      if (d.required === false) return '';
+      return d.type === 'select' ? 'Selecciona una opción.' : 'Este campo es obligatorio.';
+    }
+    if (d.type === 'email') { const e = validateEmail(v); if (e) return e; }
+    if (d.id === 'clave') { const e = validatePassword(v); if (e) return e; }
+    if (d.id === 'confirmar' && v !== $('r_clave').value) return 'Las contraseñas no coinciden.';
+    if (d.pattern && !d.pattern.test(v)) return d.msg || 'Formato no válido.';
+    if (d.type === 'number') {
+      const n = Number(v);
+      if (isNaN(n) || n < d.min || n > d.max) return 'Ingresa un número entre ' + d.min + ' y ' + d.max + '.';
+    }
+    if (d.id === 'nacimiento') {
+      if (isNaN(new Date(v))) return 'Fecha no válida.';
+      const a = edad(v);
+      const cargo = $('r_cargo') ? $('r_cargo').value : '';
+      if (a < 0) return 'La fecha no puede ser futura.';
+      if (a > 100) return 'Revisa la fecha de nacimiento.';
+      if (cargo === 'estudiante') { if (a < 3 || a > 30) return 'La edad de un estudiante debe estar entre 3 y 30 años.'; }
+      else if (cargo && a < 18) return 'Debes ser mayor de edad para este cargo.';
+    }
+    return '';
+  }
+
+  function checkField(el) {
+    const d = fieldMap[el.dataset.fid];
+    if (!d) return '';
+    const errEl = $('r_' + d.id + '_err');
+    const err = validateDef(d, el.value);
+    setFieldError(el, errEl, err);
+    if (!err && el.value) setFieldValid(el); else el.classList.remove('valid');
+    return err;
+  }
+
+  registerForm.addEventListener('focusout', e => {
+    const el = e.target;
+    if (el.dataset && el.dataset.fid && el.value !== '') checkField(el);
+  });
+
+  registerForm.addEventListener('input', e => {
+    const el = e.target;
+    if (!el.dataset || !el.dataset.fid) return;
+    $('regAlert').className = 'form-alert';
+    if (el.dataset.fid === 'clave') {
+      const meter = $('r_meter');
+      if (!el.value) { meter.className = 'pass-strength'; $('r_meterLabel').textContent = ''; }
+      else {
+        const s = passwordStrength(el.value);
+        meter.className = 'pass-strength ' + s.level;
+        $('r_meterLabel').textContent = 'Seguridad: ' + s.label;
+      }
+      const conf = $('r_confirmar');
+      if (conf && conf.value) checkField(conf);
+    }
+    if (el.classList.contains('error')) checkField(el);
+  });
+
+  registerForm.addEventListener('change', e => {
+    const el = e.target;
+    if (el.id === 'r_terminos') { $('r_terminos_err').classList.remove('visible'); return; }
+    if (!el.dataset || !el.dataset.fid) return;
+    if (el.dataset.fid === 'cargo') {
+      const box = $('roleBox');
+      renderFields(box, ROLES[el.value] || []);
+      box.classList.remove('enter'); void box.offsetWidth; box.classList.add('enter');
+      const nac = $('r_nacimiento');
+      if (nac && nac.value) checkField(nac);
+    }
+    checkField(el);
+  });
+
+  registerForm.addEventListener('submit', e => {
+    e.preventDefault();
+    $('regAlert').className = 'form-alert visible error';
+    $('regAlert').textContent = 'Completa tu registro con el botón Crear perfil con Google.';
+  });
+  if (new URLSearchParams(window.location.search).get('vista') === 'registro') {
+    showView('register');
+  }
+})();
+</script>
+<script>
+(function () {
+  const authButtons = document.getElementById('authButtons');
+  const registerPanel = document.getElementById('googleRegisterPanel');
+  const registerRole = document.getElementById('googleRegisterRole');
+  const registerError = document.getElementById('googleRegisterError');
+  const loginButton = document.getElementById('btnGoogle');
+  const registerButton = document.getElementById('btnApple');
+
+  function startGoogleAuth(mode, role) {
+    const query = new URLSearchParams({ mode });
+    if (role) query.set('role', role);
+    window.location.assign('/auth/google?' + query.toString());
+  }
+
+  loginButton.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    startGoogleAuth('login');
+  }, true);
+
+  registerButton.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    authButtons.hidden = true;
+    registerPanel.hidden = false;
+    registerRole.focus();
+  }, true);
+
+  document.getElementById('btnContinueGoogleRegister').addEventListener('click', () => {
+    if (!registerRole.value) {
+      registerError.textContent = 'Selecciona el cargo que corresponde a tu perfil.';
+      registerRole.focus();
+      return;
+    }
+    startGoogleAuth('register', registerRole.value);
+  });
+
+  document.getElementById('btnCancelGoogleRegister').addEventListener('click', () => {
+    registerPanel.hidden = true;
+    authButtons.hidden = false;
+    registerError.textContent = '';
+  });
+
+  const message = new URLSearchParams(window.location.search).get('authError');
+  if (message) {
+    let toast = document.getElementById('toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'toast';
+      toast.setAttribute('role', 'alert');
+      toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:1000;max-width:90vw;padding:14px 18px;border-radius:10px;background:#991b1b;color:white;text-align:center;';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    const cleanUrl = new URL(window.location.href);
+    cleanUrl.searchParams.delete('authError');
+    window.history.replaceState({}, '', cleanUrl);
+  }
+
+})();
+</script>
+<style>
+  body{background:radial-gradient(ellipse at 12% 10%,#d8f3ea 0,transparent 38%),radial-gradient(ellipse at 90% 90%,#dce8fb 0,transparent 36%),#f3f7f8;color:#172b3b}
+  .page{max-width:1080px;min-height:auto;width:calc(100% - 40px);margin:32px auto;padding:clamp(24px,5vw,56px);gap:clamp(28px,5vw,64px);border:1px solid #e3ebef;border-radius:28px;background:rgba(255,255,255,.94);box-shadow:0 24px 70px rgba(19,53,73,.13);text-align:left}
+  .left-panel{min-width:0}
+  .headline{color:#153b52}
+  .subtitle{max-width:400px;line-height:1.65}
+  .right-panel{background:#f7fafb;border:1px solid #e7eef1;box-shadow:0 10px 30px rgba(20,51,70,.06)}
+  .auth-buttons .btn{min-height:50px;border-radius:12px}
+  .btn-google{background:linear-gradient(120deg,#176b58,#145b78);box-shadow:0 8px 18px rgba(23,107,88,.19)}
+  .btn-google:hover{background:linear-gradient(120deg,#125746,#104d68);transform:translateY(-1px)}
+  .btn-apple{background:#fff;border:1px solid #dce5e9}
+  .btn-apple:hover{background:#edf4f6}
+  .email-form input,.email-form select,.email-form textarea{border-radius:10px}
+  .google-register-panel{border-color:#dfe9ed;box-shadow:0 14px 34px rgba(20,51,70,.1)}
+  :focus-visible{outline:3px solid rgba(29,126,105,.4);outline-offset:2px}
+  @media(min-width:900px){.page{min-height:600px}.page.registering .right-panel{flex-basis:600px}}
+  @media(max-width:899px){.page{width:min(100% - 24px,560px);min-height:calc(100dvh - 24px);margin:12px auto;padding:28px 22px;text-align:center}.left-panel,.right-panel{align-items:center}.page.registering{width:calc(100% - 24px)}}
+  @media(max-width:380px){.page{padding:24px 16px}.headline{font-size:1.45rem}}
+</style>
+</body>
+</html>

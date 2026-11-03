@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>INBEFIC</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde: #024900;
+    --azul: #001b49;
+    --rojo: #e40408;
+    --tinta: #00026e;
+    --suave: rgb(9, 114, 97);
+    --fondo: #f7f9fc;
+    --aro: #ffffff00;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --tinta: #eef1f7; --suave: #a3abbd; --fondo: #12161f; --aro: #3a4560; }
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; }
+  body {
+    min-height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background:
+      radial-gradient(circle at 1px 1px, rgba(120,135,165,.18) 1.5px, transparent 0) 0 0 / 28px 28px,
+      var(--fondo);
+    color: var(--tinta);
+    font-family: "Baloo 2", system-ui, sans-serif;
+    padding: env(safe-area-inset-top, 0) 16px env(safe-area-inset-bottom, 0);
+    overflow-x: hidden;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .pantalla {
+    width: 100%; max-width: 460px;
+    display: flex; flex-direction: column; align-items: center;
+    gap: clamp(20px, 4vh, 36px);
+    text-align: center;
+    padding: 24px 0;
+  }
+
+  /* Logo */
+  .logo {
+    border: 1.5px solid var(--azul);
+    padding: 8px 20px 6px;
+    width: 100%;
+  }
+  .logo h1 {
+    font-family: "Montserrat", system-ui, sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.4rem, 11vw, 4rem);
+    letter-spacing: .02em;
+    line-height: 1.1;
+    background: linear-gradient(90deg, var(--verde) 0%, var(--azul) 50%, var(--rojo) 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+  }
+  .logo p {
+    font-size: clamp(.62rem, 2.6vw, .8rem);
+    color: var(--suave);
+    letter-spacing: .03em;
+    margin-top: 2px;
+  }
+
+  /* Imagen central con aro de carga */
+  .visual {
+    position: relative;
+    width: clamp(200px, 62vw, 300px);
+    aspect-ratio: 1;
+    display: grid; place-items: center;
+  }
+  .visual svg.aro {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    animation: girar 3.2s linear infinite;
+  }
+  .visual svg.aro circle {
+    fill: none; stroke-width: 4; stroke-linecap: round;
+  }
+  .imagen {
+    width: 72%; aspect-ratio: 1; border-radius: 50%;
+    background: color-mix(in srgb, var(--aro) 35%, transparent);
+    display: grid; place-items: center;
+    overflow: hidden; border: 0; padding: 0;
+  }
+  .imagen img { width: 80%; height: 80%; object-fit: contain; display: block; }
+
+
+  h2 { font-size: clamp(1.7rem, 7vw, 2.3rem); letter-spacing: .06em; font-weight: 700; margin-top: -8px; }
+  .mensaje { color: var(--suave); font-size: clamp(1rem, 4vw, 1.2rem); max-width: 18em; line-height: 1.25; }
+  .version { font-weight: 700; font-size: 1rem; }
+
+  @keyframes girar { to { transform: rotate(360deg); } }
+
+  @media (min-width: 900px) {
+    .pantalla { max-width: 520px; }
+  }
+  @media (max-height: 640px) {
+    .pantalla { gap: 14px; }
+    .visual { width: 170px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .visual svg.aro, .spinner { animation-duration: 8s; }
+  }
+</style>
+</head>
+<body>
+  <main class="pantalla">
+    <div class="logo">
+      <h1 id="nombre">INBEFIC</h1>
+      <p id="subtitulo">Sistema Integral de Gestión Educativa</p>
+    </div>
+
+    <div class="visual">
+      <svg class="aro" viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#1faa59"/>
+            <stop offset=".5" stop-color="#1f5fd1"/>
+            <stop offset="1" stop-color="#e5383b"/>
+          </linearGradient>
+        </defs>
+        <circle cx="50" cy="50" r="47" stroke="var(--aro)" opacity=".5"/>
+        <circle cx="50" cy="50" r="47" stroke="url(#g)" stroke-dasharray="70 30 70 30 40 85"/>
+      </svg>
+      <div class="imagen">
+        <img id="imagen" src="Sinfondoinsignia.png" alt="">
+      </div>
+    </div>
+
+    <div class="spinner" role="status" aria-label="Cargando"></div>
+    <h2>CARGANDO</h2>
+    <p class="mensaje" id="mensaje">Toca la pantalla para comenzar</p>
+    <p class="version">Versión: <span id="version">2.1</span></p>
+  </main>
+
+<script>
+  /* ====== CONFIGURACIÓN: cambia aquí ====== */
+  const CONFIG = {
+    nombre: "INBEFIC",
+    subtitulo: "Sistema Integral de Gestión Educativa",
+    version: "2.1",
+    mensaje: "Toca la pantalla para comenzar",
+    imagen: "Sinfondoinsignia.png",
+    // 👉 Cambia esto por el nombre/ruta de tu otro index
+    destino: "http://localhost:3000/inicio%20de%20sesi%C3%B3n%20ultima%20version.html"
+  };
+  /* ======================================== */
+
+  const $ = id => document.getElementById(id);
+  $("nombre").textContent = CONFIG.nombre;
+  $("subtitulo").textContent = CONFIG.subtitulo;
+  $("version").textContent = CONFIG.version;
+  $("mensaje").textContent = CONFIG.mensaje;
+  $("imagen").src = CONFIG.imagen;
+  document.title = CONFIG.nombre;
+
+  // Al tocar cualquier parte de la pantalla, ir al otro index
+  let yaNavego = false;
+  function irAlDestino() {
+    if (yaNavego || !CONFIG.destino) return;
+    yaNavego = true;
+    window.location.href = CONFIG.destino;
+  }
+  document.addEventListener("click", irAlDestino);
+  document.addEventListener("keydown", e => {
+    if (e.key === "Enter" || e.key === " ") irAlDestino();
+  });
+</script>
+</body>
+</html>

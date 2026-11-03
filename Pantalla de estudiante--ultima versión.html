@@ -1,0 +1,2446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<title>Pantalla de estudiante</title>
+<style>
+  :root{
+    --bg-card:#1e1f23;
+    --text:#eceef1;
+    --text-dim:#00928b;
+    --green:#3ecf8e;
+    --amber:#f0a83f;
+    --orange:#e8703a;
+    --red:#e8607a;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background:
+      linear-gradient(245deg,
+        #000000 0%,
+        #f3f4f6 42%,
+        #10111404 42%,
+        #fdfdff 100%);
+    color:var(--text);
+    display:flex;
+    min-height:100vh;
+  }
+  svg{ display:block; }
+  .icon{ width:20px; height:20px; flex-shrink:0; }
+
+  /* SIDEBAR */
+  .sidebar{
+    max-height:100vh;
+    overflow-y:auto;
+    width:232px;
+    background:
+      linear-gradient(245deg,
+        #000c79fb 0%,
+        #00001b 42%,
+        #060058 42%,
+        #000000fd 100%);
+    color:#007180;
+    font-size: 4.3rem;
+    padding:0.0px 14px 26px;
+    flex-shrink:0;
+    border-right:4px solid #0000ff;
+    
+  }
+  .profile-block{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    padding:4px 6px 2px;
+    margin-bottom:12px;
+    border-bottom:1px solid #f0f0f2;
+    cursor:pointer;
+  }
+  .profile-block img{
+    width:100%;
+    height:130px;
+    
+    object-fit:cover;
+    border-radius: 14px;
+    margin-bottom:10px;
+  }
+  .profile-block .name{
+    font-weight:680;
+    font-size:20px;
+    color:#00f5e0;
+  }
+  .profile-block .role{
+    font-size:15px;
+    color:#dadada;
+    margin-top:2px;
+  }
+
+  .nav-label{
+    font-size:16.5px;
+    color:#b3b5bd;
+    text-transform:uppercase;
+    letter-spacing:0.8px;
+    margin:20px 10px 8px;
+    font-weight:600;
+  }
+  .nav-label:first-of-type{ margin-top:4px; }
+  .nav-item{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:9px 10px;
+    border-radius:9px;
+    font-size:20.5px;
+    color:#ffffff;
+    cursor:pointer;
+    text-decoration:none;
+  }
+  .nav-item:hover{ background:#f6f7f8;
+  color: #05035c;
+width: 110%; }
+ 
+  .nav-item .icon{ color:#9a9ca5; }
+  .nav-item.active{ background:#f6f7f8; color:#05035c; }
+  .nav-item.active .icon{ color:#12946a; }
+  .nav-item .chev{
+    margin-left:auto;
+    color:#c7c9d1;
+    font-size:11px;
+  }
+
+  /* MAIN */
+  .main{
+    flex:1;
+   
+    max-width:1180px;
+  }
+  .topbar{
+    display:flex;
+    justify-content:flex-end;
+    align-items: center;
+    
+   
+  }
+  .team-pill{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#fff;
+    border:1px solid #ececef;
+    padding:7px 14px; 
+    border-radius:20px;
+    font-size:13px;
+    color:#54565f;
+    margin-right:auto;
+  }
+  .team-pill .sq{
+    width:15px; height:15px; border-radius:4px;
+    background:linear-gradient(135deg,#7c5cff,#c084fc);
+  }
+  .icon-btnA{
+    width:36px;height:36px;
+    border-radius:50%;
+    background:#fff;
+    border:2px solid #0e00d8;
+    display:flex; align-items:center; justify-content:center;
+    color:#54565f;
+    cursor:pointer;
+    position:relative;
+    padding: 4px;
+  }
+  .icon-btn .dot{
+    
+    position:absolute; top:7px; right:8px;
+    width:6px; height:6px; border-radius:50%;
+    background:var(--red); border:1.5px solid #fff;
+  }
+  .avatar-top{
+    
+    width:66px;height:66px;
+    padding:5px;
+    object-fit:cover;
+    
+  }
+
+  /* HERO ROW */
+  .hero-row{
+    display:grid;
+    grid-template-columns:1.9fr 1fr;
+    gap:18px;
+    margin-bottom:18px;
+  }
+  .hero-card{
+    background:
+      radial-gradient(120% 160% at 100% 0%, #1f4a2c 0%, transparent 55%),
+      linear-gradient(120deg,#0f2417 0%, #0a140f 55%, #08090b 100%);
+    border-radius:10px;
+    padding:34px 36px;
+    color:#fff;
+    position:relative;
+    overflow:hidden;
+    min-height:190px;
+    
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .hero-card h1{
+    font-size:25px;
+    font-weight:700;
+    line-height:1.32;
+    max-width:290px;
+    letter-spacing:-0.2px;
+  }
+  .hero-card p{
+    font-size:13px;
+    color:#aebab3;
+    margin:12px 0 22px;
+    max-width:270px;
+    line-height:1.5;
+  }
+ 
+ 
+ 
+
+
+  .icon-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+  }
+  .icon-tile{
+    background:#26272c;
+    border-radius:13px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    font-size:16px;
+    aspect-ratio:1;
+  }
+  .icon-tile.js{ color:#f0db4f; }
+  .icon-tile.ts{ color:#3d8fe0; }
+  .icon-tile.next{ background:#fff; color:#111; font-size:20px;}
+  .icon-tile.react{ color:#61dafb; }
+  .icon-tile.vue{ color:#41b883; }
+  .icon-tile.figma{ color:#f24e1e; }
+
+  /* Botón hamburguesa (solo visible en móvil) */
+  .btn-hamburguesa{
+    display:none;
+    align-items:center;
+    justify-content:center;
+    width:38px; height:38px;
+    border-radius:10px;
+    background:#fff;
+    border:2px solid #0e00d8;
+    color:#0e00d8;
+    cursor:pointer;
+    margin-right:auto;
+    flex-shrink:0;
+  }
+  .btn-hamburguesa svg{ width:20px; height:20px; }
+
+  /* Fondo oscuro detrás del menú lateral en móvil */
+  .sidebar-backdrop{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+    z-index:150;
+  }
+  .sidebar-backdrop.activo{ display:block; }
+
+  @media (max-width: 1180px){
+    .btn-hamburguesa{ display:flex; }
+
+    .sidebar{
+      display:block;
+      position:fixed;
+      top:0; left:0;
+      height:100vh;
+      z-index:200;
+      transform:translateX(-100%);
+      transition:transform .25s ease;
+      box-shadow:8px 0 24px rgba(0,0,0,0.35);
+      overflow-y:auto;
+    }
+    .sidebar.abierto{ transform:translateX(0); }
+
+    .hero-row, .stat-row, .bottom-row{ grid-template-columns:1fr; }
+    .main{ padding:20px; }
+  }
+
+  /* ============================================================
+     PANTALLAS DEL MENU (Perfil, Faltas, Deméritos, Notas,
+     Asistencias, Horas sociales) — estilo tipo aplicación
+     ============================================================ */
+  :root{
+    --ep-navy-1:#000002;
+    --ep-navy-2:#001279;
+    --ep-ink:#101833;
+    --ep-sub:#6b7390;
+    --ep-line:#0b22a1;
+    --ep-surface:#0a4e0849;
+    --ep-blue:#0b006e;
+    --ep-green:#094b00;
+    --ep-amber:#eb7100;
+    --ep-red:#eb0000;
+  }
+
+  .content-area{
+    padding:22px 22px 40px 0;
+    width:100%;
+  }
+  .content-area > .page-section,
+  .content-area > .hero-row{
+    background:var(--ep-surface);
+    border-radius:7px;
+    padding:26px 30px 34px;
+  }
+
+  .page-section{ display:none; }
+  .page-section.active{ display:block; animation:epFade .25s ease; }
+  @keyframes epFade{ from{ opacity:0; transform:translateY(4px);} to{ opacity:1; transform:translateY(0);} }
+
+  /* Banner de cabecera por sección */
+  .page-banner{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    background:linear-gradient(120deg, var(--ep-navy-1) 0%, var(--ep-navy-2) 100%);
+    border-radius:15px;
+    padding:20px 26px;
+    color:#fff;
+    width:100%;
+    margin-bottom:22px;
+    box-shadow:0 12px 24px -10px rgba(13, 22, 56, 0.719);
+  }
+  .page-banner .icon-badge{
+    width:50px; height:50px; border-radius:14px;
+    background:rgba(255,255,255,.14);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .page-banner .icon-badge svg{ width:26px; height:26px; }
+  .page-banner h2{ font-size:19px; font-weight:700; letter-spacing:-.2px; }
+  .page-banner p{ font-size:12.5px; color:#c6cdf3; margin-top:2px; }
+
+  .seccion-titulo{
+    font-size:46px;
+    font-weight:700;
+    color:var(--ep-ink);
+    margin-bottom:14px;
+  }
+
+  /* Tira de estadísticas (KPI) */
+  .stat-strip{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(180px,1fr));
+    gap:14px;
+    margin-bottom:24px;
+  }
+  .stat-card{
+    background:#fff;
+    border-radius:16px;
+    padding:16px 18px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    box-shadow:0 6px 16px -8px rgba(4, 14, 44, 0.938);
+  }
+  .stat-card .stat-icon{
+    width:42px; height:42px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; flex-shrink:0;
+  }
+  .stat-card .stat-icon svg{ width:20px; height:20px; }
+  .stat-card .stat-num{ font-size:24px; font-weight:800; color:var(--ep-ink); line-height:1.1; }
+  .stat-card .stat-lbl{ font-size:15.5px; color:var(--ep-sub); margin-top:1px; }
+  .bg-blue{ background:var(--ep-blue); }
+  .bg-green{ background:var(--ep-green); }
+  .bg-amber{ background:var(--ep-amber); }
+  .bg-red{ background:var(--ep-red); }
+
+  /* ---------- Inicio ---------- */
+  .inicio-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(230px,1fr));
+    gap:18px;
+  }
+  .inicio-card{
+    background:#fff;
+    border-radius:16px;
+    padding:20px 20px 18px;
+    box-shadow:0 6px 16px -8px rgba(16,24,51,0.25);
+    cursor:pointer;
+    transition:transform .15s ease;
+  }
+  .inicio-card:hover{ transform:translateY(-3px); }
+  .inicio-card .ic-top{ display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .inicio-card h4{ font-size:15px; color:var(--ep-ink); }
+  .inicio-card p{ font-size:13px; color:var(--ep-sub); line-height:1.5; }
+  body.modo-oscuro .inicio-card{ background:#22242f; box-shadow:0 6px 16px -8px rgba(0,0,0,0.6); }
+  body.modo-oscuro .inicio-card h4{ color:#fcfcfd; }
+  body.modo-oscuro .inicio-card p{ color:#a1b1ff; }
+
+  /* ---------- Personal de la institución ---------- */
+  .personal-tabs{ display:flex; gap:10px; margin-bottom:20px; }
+  .personal-tab{
+    display:flex; align-items:center; gap:8px;
+    padding:9px 18px;
+    border-radius:20px;
+    font-size:13px; font-weight:700;
+    background:#fff; color:var(--ep-blue);
+    border:1px solid #dfe2ee;
+    cursor:pointer;
+  }
+  .personal-tab.active{ background:var(--ep-blue); color:#fff; border-color:var(--ep-blue); }
+  .personal-grid{
+    display:none;
+    grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
+    gap:18px;
+  }
+  .personal-grid.active{ display:grid; }
+  .persona-card{
+    background:#fff;
+    border-radius:16px;
+    padding:18px 20px;
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    box-shadow:0 6px 16px -8px rgba(16,24,51,0.25);
+  }
+  .persona-card .persona-avatar{
+    width:48px; height:48px; border-radius:50%; flex-shrink:0;
+    background:linear-gradient(135deg,#8b98f2,var(--ep-blue));
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-weight:700; font-size:16px;
+  }
+  .persona-card h4{ font-size:14.5px; color:var(--ep-ink); margin-bottom:4px; }
+  .persona-card .tc-fila{ font-size:12.5px; color:#4a5164; line-height:1.5; }
+  .persona-card .tc-fila b{ color:var(--ep-ink); }
+  body.modo-oscuro .persona-card{ background:#22242f; box-shadow:0 6px 16px -8px rgba(0,0,0,0.6); }
+  body.modo-oscuro .persona-card h4{ color:#fcfcfd; }
+  body.modo-oscuro .persona-card .tc-fila{ color:#a1b1ff; }
+  body.modo-oscuro .personal-tab{ background:#22242f; color:#a1b1ff; border-color:#33354a; }
+  body.modo-oscuro .personal-tab.active{ background:var(--ep-blue); color:#fff; }
+
+  /* ---------- Nota de reposición ---------- */
+  .reposicion-nota{
+    background:#fff;
+    border-radius:16px;
+    padding:16px 20px;
+    margin-top:18px;
+    font-size:13px;
+    color:#4a5164;
+    box-shadow:0 6px 16px -8px rgba(16,24,51,0.15);
+  }
+  .reposicion-nota .rn-titulo{ font-weight:700; color:var(--ep-ink); margin-bottom:4px; font-size:14px; }
+  .reposicion-nota .rn-ok{ color:#0b7a5a; font-weight:600; margin-top:4px; }
+  body.modo-oscuro .reposicion-nota{ background:#22242f; box-shadow:0 6px 16px -8px rgba(0,0,0,0.6); color:#a1b1ff; }
+  body.modo-oscuro .reposicion-nota .rn-titulo{ color:#fcfcfd; }
+
+  /* ---------- Estado / redención en deméritos ---------- */
+  .estado-pill{
+    font-size:11px; font-weight:700; padding:4px 10px; border-radius:20px;
+  }
+  .estado-pill.pendiente{ color:#a2660c; background:#fdf1de; }
+  .estado-pill.redimido{ color:#0b7a5a; background:#e2f7ef; }
+  .tc-redencion{
+    margin-top:10px; padding-top:10px; border-top:1px dashed #e1e3ea;
+    font-size:12.5px; color:#4a5164; line-height:1.5;
+  }
+  body.modo-oscuro .tc-redencion{ border-top-color:#33354a; color:#a1b1ff; }
+
+  /* ---------- Perfil ---------- */
+  .perfil-banner{
+    position:relative;
+    background:linear-gradient(125deg, var(--ep-navy-1) 0%, var(--ep-navy-2) 100%);
+    border-radius:20px;
+    padding:34px 30px 56px;
+    color:#fff;
+    overflow:hidden;
+  }
+  .perfil-banner::after{
+    content:'';
+    position:absolute; right:-40px; top:-60px;
+    width:220px; height:220px; border-radius:50%;
+    background:rgba(79, 155, 255, 0.144);
+  }
+  .perfil-banner .perfil-nombre{ font-size:27px; font-weight:800; }
+  .perfil-banner .perfil-rol{ font-size:16px; color:#c6cdf3; margin-top:4px; }
+  .perfil-avatar-wrap{ position:relative; z-index:1; display:flex; align-items:center; gap:18px; }
+  .perfil-avatar-wrap img{
+    width:78px; height:78px; border-radius:50%; object-fit:cover;
+    border:4px solid rgba(255,255,255,.85);
+  }
+  .perfil-chips{
+    position:relative;
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(200px,1fr));
+    gap:16px;
+    margin-top:-34px;
+    z-index:2;
+  }
+  .perfil-chip{
+    background:#fff;
+    border-radius:16px;
+    padding:16px 18px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    box-shadow:0 10px 22px -10px rgba(16,24,51,0.25);
+  }
+  .perfil-chip .chip-icon{
+    width:40px; height:40px; border-radius:8px;
+    background:#eef1fa; color:var(--ep-blue);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .perfil-chip .chip-icon svg{ width:29px; height:29px; }
+  .perfil-chip .chip-lbl{ font-size:21px; color:var(--ep-sub); text-transform:uppercase; letter-spacing:.3px; }
+  .perfil-chip .chip-val{ font-size:18.5px; font-weight:700; color:var(--ep-ink); margin-top:1px; }
+
+  /* ---------- Línea de tiempo (faltas / deméritos / horas sociales) ---------- */
+  .timeline{ position:relative; padding-left:26px; }
+  .timeline::before{
+    content:''; position:absolute; left:8px; top:6px; bottom:6px; width:2px;
+    background:var(--ep-line);
+  }
+  .timeline-item{ position:relative; margin-bottom:18px; }
+  .timeline-item:last-child{ margin-bottom:0; }
+  .timeline-item::before{
+    content:''; position:absolute; left:-26px; top:18px;
+    width:14px; height:14px; border-radius:50%;
+    background:var(--ep-red);
+    border:3px solid var(--ep-surface);
+    box-shadow:0 0 0 2px var(--ep-line);
+  }
+  .timeline-item.demerito::before{ background:var(--ep-amber); }
+  .timeline-item.social::before{ background:var(--ep-green); }
+  .timeline-card{
+    background:#fff;
+    border-radius:16px;
+    padding:18px 20px;
+    box-shadow:0 6px 16px -8px rgba(16,24,51,0.15);
+  }
+  .timeline-card
+  .timeline-card .tc-top{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:10px; flex-wrap:wrap; gap:8px;
+  }
+  .timeline-card h4{ font-size:15px; color:var(--ep-ink); }
+  .fecha-pill{
+    font-size:11.5px; font-weight:700; color:var(--ep-red);
+    background:#fde9ec; padding:4px 12px; border-radius:20px;
+  
+  }
+  .fecha-pill.amber{ color:#a2660c; background:#fdf1de; }
+  .fecha-pill.green{ color:#0b7a5a; background:#e2f7ef; }
+  .timeline-card .tc-fila{ font-size:13.5px; color:#4a5164; margin-top:6px; line-height:1.5; }
+  .timeline-card .tc-fila b{ color:var(--ep-ink); }
+
+  /* ---------- Notas: tarjetas de materia ---------- */
+  .materias-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(230px,1fr));
+    gap:18px;
+  }
+  .materia-card{
+    background:#fff;
+    border-radius:16px;
+    padding:20px 20px 18px;
+    box-shadow:0 6px 16px -8px rgb(0, 7, 29);
+  }
+  .materia-card .mc-top{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; }
+  .materia-card .mc-nombre{ font-weight:700; font-size:14.5px; color:var(--ep-ink); max-width:120px; line-height:1.3; }
+  .promedio-badge{
+    width:48px; height:48px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:13.5px; color:#fff; flex-shrink:0;
+  }
+  .mini-bars{ display:flex; align-items:flex-end; gap:8px; height:52px; margin-bottom:8px; }
+  .mini-bars .bar-col{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; }
+  .mini-bars .bar{ width:100%; border-radius:5px 5px 2px 2px; background:linear-gradient(180deg,#8b98f2,var(--ep-blue)); }
+  .mini-bars .bar-val{ font-size:10px; color:var(--ep-sub); margin-top:5px; }
+  .mini-bars .bar-lbl{ font-size:9.5px; color:#a7adc4; margin-top:1px; text-transform:uppercase; }
+
+  /* ---------- Asistencia: tira de días ---------- */
+  .dias-strip{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(130px,1fr));
+    gap:14px;
+    margin-bottom:22px;
+  }
+  .dia-card{
+    background:#fff;
+    border-radius:16px;
+    padding:16px 10px;
+    text-align:center;
+    border-top:4px solid var(--ep-line);
+    box-shadow:0 6px 16px -8px rgba(16,24,51,0.15);
+  }
+  .dia-card.ok{ border-top-color:var(--ep-green); }
+  .dia-card.mal{ border-top-color:var(--ep-red); }
+  .dia-card.permiso{ border-top-color:var(--ep-amber); }
+  .dia-card .dia-nombre{ font-size:11px; color:var(--ep-sub); text-transform:uppercase; letter-spacing:.4px; }
+  .dia-card .dia-fecha{ font-size:12px; color:#3b4356; margin:2px 0 10px; }
+  .dia-card .icono-estado{
+    width:38px; height:38px; border-radius:50%;
+    margin:0 auto 8px;
+    display:flex; align-items:center; justify-content:center;
+    color:#fff;
+  }
+  .dia-card .icono-estado svg{ width:18px; height:18px; }
+  .icono-estado.ok{ background:var(--ep-green); }
+  .icono-estado.mal{ background:var(--ep-red); }
+  .icono-estado.permiso{ background:var(--ep-amber); }
+  .dia-card .dia-obs{ font-size:11px; color:var(--ep-sub); }
+
+  /* ---------- Horas sociales: anillo de progreso ---------- */
+  .horas-card{
+    background:#fff;
+    border-radius:18px;
+    padding:26px 28px;
+    width:100%;
+    margin-bottom:22px;
+    box-shadow:0 6px 16px -8px rgba(16,24,51,0.15);
+    display:flex;
+    align-items:center;
+    gap:32px;
+    flex-wrap:wrap;
+  }
+  .progreso-ring{
+    width:128px; height:128px; border-radius:50%;
+    background:conic-gradient(var(--ep-green) calc(var(--pct,65)*1%), var(--ep-line) 0);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .progreso-ring .ring-inner{
+    width:96px; height:96px; border-radius:50%; background:#fff;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+  }
+  .progreso-ring .ring-inner .num{ font-size:20px; font-weight:800; color:var(--ep-ink); line-height:1; }
+  .progreso-ring .ring-inner .den{ font-size:11px; color:var(--ep-sub); margin-top:2px; }
+  .horas-info .horas-nom{ font-weight:700; color:var(--ep-ink); font-size:15px; }
+  .horas-info .horas-lista{ font-size:12.5px; color:var(--ep-sub); margin-bottom:10px; }
+  .estado-badge{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:12.5px; font-weight:700; color:#137400;
+    background:#e2f7ef; padding:6px 14px; border-radius:20px;
+  }
+
+  /* ============================================================
+     PANTALLA EMERGENTE DE AJUSTES
+     ============================================================ */
+  .ov-ajustes{
+    position:fixed;
+    inset:0;
+    background:rgba(10,12,30,0.55);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:500;
+  }
+  .ov-ajustes.activo{ display:flex; }
+
+  .modal-ajustes{
+    width:min(590px, 92vw);
+    max-height:min(640px, 88vh);
+    background:#fff;
+    border-radius:11px;
+    box-shadow:0 20px 60px -10px rgba(190, 190, 190, 0.623);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    font-family:'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    transition:background .25s ease, color .25s ease;
+  }
+
+  .ajustes-header{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:32px 32px 28px;
+    background:linear-gradient(120deg, var(--ep-navy-1) 0%, var(--ep-navy-2) 100%);
+    color:#fff;
+  }
+  .ajustes-header .icon-badge{
+    width:44px; height:44px; border-radius:10px;
+    background:rgba(255,255,255,.16);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .ajustes-header .icon-badge svg{ width:22px; height:22px; }
+  .ajustes-header h2{ font-size:23px; font-weight:700; }
+  .ajustes-header p{ font-size:18px; color:#7e7f86; margin-top:2px; }
+  .ajustes-cerrar{
+    margin-left:auto;
+    background:rgba(255,255,255,.12);
+    border:none;
+    color:#fff;
+    width:42px; height:42px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    flex-shrink:0;
+  }
+  .ajustes-cerrar:hover{ background:rgba(255,255,255,.24); }
+  .ajustes-cerrar svg{ width:26px; height:26px; }
+
+  .ajustes-body{
+    padding:8px 6px 14px;
+    overflow-y:auto;
+  }
+
+  .ajuste-grupo-titulo{
+    font-size:14px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.6px;
+    color:#003eb9de;
+    padding:14px 22px 6px;
+  }
+
+  .ajuste-fila{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:12px 22px;
+    transition:background .15s ease;
+  }
+  .ajuste-fila:hover{ background:#f6f7fb; }
+
+  .ajuste-icono{
+    width:38px; height:38px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    color:#fff;
+    flex-shrink:0;
+  }
+  .ajuste-icono svg{ width:19px; height:19px; }
+
+  .ajuste-texto{ flex:1; min-width:0; }
+  .ajuste-texto .at-nombre{ font-size:14px; font-weight:600; color:var(--ep-ink); }
+  .ajuste-texto .at-desc{ font-size:11.5px; color:var(--ep-sub); margin-top:1px; }
+
+  /* interruptor tipo switch */
+  .switch{
+    position:relative;
+    width:44px; height:26px;
+    flex-shrink:0;
+    cursor:pointer;
+  }
+  .switch input{
+    opacity:0; width:0; height:0; position:absolute;
+  }
+  .switch .track{
+    position:absolute; inset:0;
+    background:#cececf;
+    border-radius:20px;
+    transition:background .2s ease;
+  }
+  .switch .track::before{
+    content:'';
+    position:absolute;
+    left:3px; top:3px;
+    width:20px; height:20px;
+    border-radius:50%;
+    background:#fbfcfd;
+    box-shadow:0 1px 3px rgba(0, 0, 0, 0.452);
+    transition:transform .2s ease;
+  }
+  .switch input:checked + .track{ background:var(--ep-blue); }
+  .switch input:checked + .track::before{ transform:translateX(18px); }
+
+  /* selector simple (idioma / tamaño de texto) */
+  .ajuste-select{
+    border:1px solid #e1e3ea;
+    background:#f6f7fb;
+    border-radius:8px;
+    padding:7px 10px;
+    font-size:12.5px;
+    color:var(--ep-ink);
+    font-family:inherit;
+    cursor:pointer;
+    flex-shrink:0;
+  }
+
+  .ajuste-separador{
+    height:1.90px;
+    background:#00082033;
+    margin:6px 22px;
+  }
+
+  /* --------- MODO OSCURO (aplicado a toda la app) --------- */
+  body.modo-oscuro{
+    background:#12131a !important;
+  }
+  body.modo-oscuro .sidebar{
+    border-right-color:#2a2c3a;
+  }
+  body.modo-oscuro .content-area > .page-section,
+  body.modo-oscuro .content-area > .hero-row{
+    background:#1a1c26;
+  }
+  body.modo-oscuro .stat-card,
+  body.modo-oscuro .perfil-chip,
+  body.modo-oscuro .timeline-card,
+  body.modo-oscuro .materia-card,
+  body.modo-oscuro .dia-card,
+  body.modo-oscuro .horas-card{
+    background:#22242f;
+    box-shadow:0 6px 16px -8px rgba(0,0,0,0.6);
+  }
+  body.modo-oscuro .seccion-titulo,
+  body.modo-oscuro .materia-card .mc-nombre,
+  body.modo-oscuro .timeline-card h4,
+  body.modo-oscuro .perfil-chip .chip-val,
+  body.modo-oscuro .horas-info .horas-nom,
+  body.modo-oscuro .stat-card .stat-num,
+  body.modo-oscuro .progreso-ring .ring-inner .num{
+    color:#fcfcfd;
+  }
+  body.modo-oscuro .timeline-card .tc-fila,
+  body.modo-oscuro .stat-card .stat-lbl,
+  body.modo-oscuro .perfil-chip .chip-lbl,
+  body.modo-oscuro .horas-info .horas-lista,
+  body.modo-oscuro .dia-card .dia-fecha,
+  body.modo-oscuro .dia-card .dia-obs,
+  body.modo-oscuro .mini-bars .bar-val{
+    color:#a1b1ff;
+  }
+  body.modo-oscuro .progreso-ring .ring-inner{ background:#22242f; }
+  body.modo-oscuro .modal-ajustes{ background:#1e1f2a; color:#eceef1; }
+  body.modo-oscuro .ajuste-texto .at-nombre{ color:#eceef1; }
+  body.modo-oscuro .ajuste-fila:hover{ background:#262838; }
+  body.modo-oscuro .ajuste-separador{ background:#2a2c3a; }
+  body.modo-oscuro .ajuste-select{ background:#262838; border-color:#33354a; color:#eceef1; }
+
+  /* --------- Tamaño de texto ajustable --------- */
+  body.texto-grande .content-area{ font-size:1.08em; }
+  body.texto-pequeno .content-area{ font-size:0.92em; }
+</style>
+</head>
+<body>
+
+  <aside class="sidebar" id="sidebarMenu">
+    <div class="profile-block" id="btnHome" title="Ir al inicio">
+      <!-- IMAGEN DE PERFIL: reemplaza el src por tu logo o foto -->
+      <img src="chelito.webp" alt="Imagen de perfil / logo">
+      <div class="name">Nelson Montano</div>
+      <div class="role">Estudiante</div>
+    </div>
+
+    <div class="nav-label">barra de trabajo</div>
+    <a class="nav-item" data-page="inicio">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/></svg>
+      Inicio
+    </a>
+    <a class="nav-item" data-page="asistencias">
+      <img src="hecho.png" height="40px" width="40px" alt="">
+      Asistencia
+    </a>
+    <a class="nav-item" data-page="notas">
+      <img src="calificacion-de-estrellas.png" width="40px" 30px alt="">
+      Notas 
+    </a>
+    <a class="nav-item" data-page="demeritos">
+      <img src="sancion.png" height="40px" width="40px" alt="">
+      Deméritos
+    </a>
+    <a class="nav-item" data-page="personal">
+      <img src="3D.jpeg" height="40px" width="40px" alt="">
+      Perfiles
+    </a>
+    <a class="nav-item" data-page="faltas">
+      <img src="falta.png" height="40px" width="40px" alt="">
+      Faltas disciplinarias
+    </a>
+    <a class="nav-item" data-page="horas">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="#e8607a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+      </svg>
+      Horas sociales
+    </a>
+  </aside>
+
+  <!-- Fondo oscuro para el menú lateral en móvil -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <main class="main">
+    <div class="topbar">
+      <button class="btn-hamburguesa" id="btnHamburguesa" title="Abrir menú">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      
+      
+     
+
+      
+      <div class="icon-btn">
+        
+
+<style>
+  :root{
+    --rojo: #8c1212;
+    --Azul-oscuro: #000655;
+    --gris-borde: #000b6e;
+    --gris-texto: #000535;
+    --negro-texto: #5c5c5c;
+    --fondo-hover: #f5f6f6;
+  }
+
+
+
+
+
+  .abrir-btn{
+    background: white;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+    
+    transition: background 0.15s ease;
+  }
+  .abrir-btn:hover{ background: #fffefe; }
+
+
+  /* ---------- Overlay (fondo blanco detrás del modal) ---------- */
+  .overlay{
+    position: fixed;
+    inset: 0;
+    background: #d8d7d700;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+  }
+  .overlay.activo{ display:flex; }
+
+  /* ---------- Modal ---------- */
+  .modal{
+    width: min(880px, 94vw);
+    height: min(640px, 88vh);
+    background: #e2e1e1;
+    border-radius: 15px;
+    box-shadow: 0 4px 28px rgba(0, 0, 0, 0.788);
+    display:flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid black;
+    font-size: 2.9rem;
+  }
+
+  .modal-header{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    padding: 18px 24px 0 24px;
+     background:
+      linear-gradient(245deg,
+        #000c79fb 0%,
+        #00001b 42%,
+        #060058 42%,
+        #000000fd 100%);
+  }
+
+  .titulo-bloque h2{
+    margin:0;
+    font-size: 19px;
+    color: white;
+    font-weight: 600;
+    
+  }
+  .titulo-bloque p{
+    margin: 2px 0 0 0;
+    font-size: 17px;
+    color: white;
+    padding: 9px;
+    
+    
+  }
+
+  .tabs{
+    display:flex;
+    gap: 32px;
+    margin-left: 40px;
+  }
+  .tab{
+    background:none;
+    border:none;
+    font-size: 18px;
+    color: white;
+    padding: 4px 2px 14px 2px;
+    cursor:pointer;
+    border-bottom: 3px solid transparent;
+    font-family: inherit;
+    
+  }
+  .tab.activo{
+    color: aqua;
+    font-weight: 600;
+    border-bottom-color: aqua;
+
+  }
+  .tab:hover{ color: aqua; }
+
+  .header-icons{
+    display:flex;
+    gap: 28px;
+    align-items:center;
+  }
+  .icon-btn{
+    background:none;
+    border:none;
+    cursor:pointer;
+    color: rgb(249, 250, 253);
+    padding: 6px;
+    border-radius: 50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition: background 0.15s ease;
+  }
+  .icon-btn:hover{ background: var(--fondo-hover); color: var(--negro-texto); }
+  .icon-btn svg{ width:25px; height:25px; }
+
+  .flex-header-top{
+    display:flex;
+    align-items:flex-start;
+    justify-content: space-between;
+    width:100%;
+  }
+
+  /* barra de búsqueda desplegable */
+  .search-bar{
+    display:none;
+    align-items:center;
+    gap:10px;
+    margin: 14px 24px 0 24px;
+    background: white;
+    border-radius: 8px;
+    padding: 8px 14px;
+  }
+  .search-bar.activa{ display:flex; }
+  .search-bar input{
+    border:none;
+    background:transparent;
+    outline:none;
+    flex:1;
+    font-size: 17px;
+    font-family: inherit;
+  }
+  .search-bar svg{ width:16px; height:16px; color: white; flex-shrink:0; }
+
+  /* columnas de tabla */
+  .tabla-header{
+    display:flex;
+    padding: 18px 24px 10px 24px;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--negro-texto);
+    border-bottom: 1px solid white;
+  }
+  .col-doc{ flex: 2; }
+  .col-com{ flex: 1.4; }
+  .col-env{ flex: 1.2; }
+
+  .lista-contenedor{
+    flex:1;
+    overflow-y:auto;
+    padding-bottom: 100px;
+  }
+
+  .grupo-fecha{
+    padding: 16px 24px 4px 24px;
+  }
+  .grupo-fecha .fecha-principal{
+    font-weight:600;
+    font-size:15px;
+    color: var(--negro-texto);
+    margin:0;
+  }
+  .grupo-fecha .fecha-rango{
+    font-size:13px;
+    color: var(--gris-texto);
+    margin: 2px 0 0 0;
+  }
+
+  .item-fila{
+    display:flex;
+    align-items:center;
+    padding: 10px 24px;
+    cursor:pointer;
+    transition: background 0.12s ease;
+    border-radius: 8px;
+    margin: 0 8px;
+  }
+  .item-fila:hover{ background: var(--fondo-hover); }
+
+  .col-doc-fila{
+    flex:2;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    min-width:0;
+    
+  }
+
+  .miniatura{
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    overflow:hidden;
+    background:#f0f2f2;
+  }
+  .miniatura img{ width:100%; height:100%; object-fit:cover; }
+  .miniatura svg{ width:90px; height:90px; }
+  .miniatura.pdf{ background:#fde3e1; }
+  .miniatura.pdf svg{ color:#e15b52; }
+  .miniatura.audio{ background:#eef0f0; }
+  .miniatura.audio svg{ color:#54656f; }
+  .miniatura.doc{ background:#dbe9fb; }
+  .miniatura.doc svg{ color:#2f6fd6; }
+
+  .doc-info{ min-width:0; }
+  .doc-info .nombre{
+    font-size: 20px;
+    color: var(--negro-texto);
+    font-weight: 500;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .doc-info .meta{
+    font-size: 14px;
+    color: var(--gris-texto);
+    margin-top:2px;
+  }
+
+  .col-com-fila{
+    flex: 1.4;
+    font-size: 14px;
+    color: var(--gris-texto);
+  }
+
+  .col-env-fila{
+    flex: 1.2;
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--negro-texto);
+  }
+
+  .avatar-envio{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background: linear-gradient(135deg,#c9c9c9,#a6a6a6);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-size:14px;
+    font-weight:600;
+    flex-shrink:0;
+  }
+
+  .envio-texto .nombre-env{ font-weight:500; }
+  .envio-texto .fecha-env{ color: var(--gris-texto); font-size:12px; margin-top:1px; }
+
+  .acciones-fila{
+    display:flex;
+    gap: 6px;
+    margin-left: 12px;
+  }
+
+  .estado-vacio{
+    text-align:center;
+    padding: 60px 20px;
+    color: var(--gris-texto);
+  }
+  .estado-vacio svg{ width:48px; height:48px; margin-bottom:12px; opacity:0.5; }
+
+  /* input de imagen oculto */
+  #inputImagen{ display:none; }
+
+  /* toast de acción */
+  .toast{
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #222;
+    color:#fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    opacity:0;
+    pointer-events:none;
+    transition: all 0.25s ease;
+    z-index: 200;
+    max-width: 90vw;
+    text-align:center;
+  }
+  .toast.mostrar{
+    opacity:1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* modal de visor de imagen grande */
+  .visor-overlay{
+    position: fixed;
+    inset:0;
+    background: rgba(0,0,0,0.85);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index: 300;
+  }
+  .visor-overlay.activo{ display:flex; }
+  .visor-overlay img{
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 6px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  }
+  .cerrar-visor{
+    position:absolute;
+    top: 24px;
+    right: 32px;
+    background: rgba(255,255,255,0.15);
+    border:none;
+    color:#fff;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .cerrar-visor:hover{ background: rgba(255,255,255,0.28); }
+
+  /* ---------- Menú desplegable de acciones ---------- */
+  .menu-acciones{
+    position: fixed;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+    border: 1px solid var(--gris-borde);
+    padding: 6px;
+    min-width: 220px;
+    z-index: 400;
+    display: none;
+  }
+  .menu-acciones.activo{ display:block; }
+  .menu-item{
+    display:flex;
+    align-items:center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--negro-texto);
+  }
+  .menu-item:hover{ background: rgba(0, 0, 94, 0.993);
+  color: white; 
+  border-radius: 5px;
+}
+
+  .menu-item svg{ width:18px; height:18px; color: var(--gris-texto); flex-shrink:0; }
+  .menu-item.eliminar{ color: #b80000; }
+  .menu-item.eliminar svg{ color: #ec1000; }
+
+  @media (max-width: 1180px){
+    .col-com{ display:none; }
+    .col-com-fila{ display:none; }
+    .tabs{ margin-left: 0; gap: 16px; }
+    .modal-header{ flex-wrap: wrap; }
+    .modal{ height: 92vh; width: 100%; }
+  }
+
+
+
+
+
+
+</style>
+
+
+    <button class="abrir-btn" id="btnAbrir"><img src="notificacion.png" height="30px"  width="30px" alt="" ></button>
+
+  </div>
+
+
+  <div class="overlay" id="overlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Contenido multimedia">
+
+      <div class="modal-header">
+        <div class="flex-header-top" style="flex-direction:column; width:auto;">
+          <div class="titulo-bloque">
+            <h2><img src="Pantera2" height="60px" width="60px"  alt="">Avisos</h2>
+            <p id="subtitulo">Avisos personales y Generales</p>
+          </div>
+        </div>
+
+        <div class="tabs">
+          <button class="tab" data-tab="multimedia">Avisos</button>
+          <button class="tab activo" data-tab="documentos">General</button>
+          <button class="tab" data-tab="enlaces">Personal</button>
+        </div>
+
+        <div class="header-icons">
+          <button class="icon-btn" id="btnBuscar" title="Buscar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </button>
+          <button class="icon-btn" id="btnOrdenar" title="Ordenar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
+          </button>
+          <button class="icon-btn" id="btnSeleccionar" title="Seleccionar todo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          </button>
+          <button class="icon-btn" id="btnAgregarImagen" title="Insertar imagen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </button>
+          <button class="icon-btn" id="btnCerrar" title="Cerrar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="search-bar" id="searchBar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="inputBusqueda" placeholder="Buscar por nombre de documento">
+      </div>
+
+      <div class="tabla-header">
+        <div class="col-doc">Documento</div>
+        <div class="col-com">Comentario</div>
+        <div class="col-env">Enviado por</div>
+      </div>
+
+      <div class="lista-contenedor" id="listaContenedor"></div>
+    </div>
+  </div>
+
+  <!-- Visor de imagen grande -->
+  <div class="visor-overlay" id="visorOverlay">
+    <button class="cerrar-visor" id="cerrarVisor">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <img id="imagenGrande" src="" alt="Vista ampliada">
+  </div>
+
+  <!-- ===================== PANTALLA EMERGENTE: AJUSTES ===================== -->
+  <div class="ov-ajustes" id="ovAjustes">
+    <div class="modal-ajustes" role="dialog" aria-modal="true" aria-label="Ajustes de la aplicación">
+      <div class="ajustes-header">
+        <div class="icon-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.2a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.2a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.2a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9c.2.6.7 1 1.3 1H21a2 2 0 1 1 0 4h-.2a1.6 1.6 0 0 0-1.4 1z"/></svg>
+        </div>
+        <div>
+          <h2>Ajustes</h2>
+          <p>Personaliza tu aplicación</p>
+        </div>
+        <button class="ajustes-cerrar" id="btnCerrarAjustes" title="Cerrar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="ajustes-body">
+
+        <div class="ajuste-grupo-titulo">Apariencia</div>
+
+        <div class="ajuste-fila">
+          <div class="ajuste-icono" style="background:#334155">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+          </div>
+          <div class="ajuste-texto">
+            <div class="at-nombre">Modo oscuro</div>
+            <div class="at-desc">Cambia los colores de la app a un tema oscuro</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="chkModoOscuro">
+            <span class="track"></span>
+          </label>
+        </div>
+
+        <div class="ajuste-fila">
+          <div class="ajuste-icono" style="background:var(--ep-blue)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+          </div>
+          <div class="ajuste-texto">
+            <div class="at-nombre">Tamaño de texto</div>
+            <div class="at-desc">Ajusta el tamaño de la letra en la app</div>
+          </div>
+          <select class="ajuste-select" id="selTamanoTexto">
+            <option value="pequeno">Pequeño</option>
+            <option value="normal" selected>Normal</option>
+            <option value="grande">Grande</option>
+          </select>
+        </div>
+
+        <div class="ajuste-separador"></div>
+        <div class="ajuste-grupo-titulo">Notificaciones</div>
+
+        <div class="ajuste-fila">
+          <div class="ajuste-icono" style="background:var(--ep-amber)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </div>
+          <div class="ajuste-texto">
+            <div class="at-nombre">Avisos y alertas</div>
+            <div class="at-desc">Recibe notificaciones de avisos generales</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="chkNotificaciones" checked>
+            <span class="track"></span>
+          </label>
+        </div>
+
+        <div class="ajuste-fila">
+          <div class="ajuste-icono" style="background:var(--ep-green)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4Z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.08"/></svg>
+          </div>
+          <div class="ajuste-texto">
+            <div class="at-nombre">Sonido</div>
+            <div class="at-desc">Reproduce un sonido al recibir avisos</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="chkSonido">
+            <span class="track"></span>
+          </label>
+        </div>
+
+        <div class="ajuste-separador"></div>
+        <div class="ajuste-grupo-titulo">General</div>
+
+        <div class="ajuste-fila">
+          <div class="ajuste-icono" style="background:#7c5cff">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20Z"/></svg>
+          </div>
+          <div class="ajuste-texto">
+            <div class="at-nombre">Idioma</div>
+            <div class="at-desc">Idioma de la interfaz</div>
+          </div>
+          <select class="ajuste-select" id="selIdioma">
+            <option value="es" selected>Español</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Menú de acciones desplegable -->
+  <div class="menu-acciones" id="menuAcciones">
+    <div class="menu-item" data-accion="seleccionar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><polyline points="8 12 11 15 16 9"/></svg>
+      Seleccionar
+    </div>
+    <div class="menu-item" data-accion="ir-mensaje">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/></svg>
+      Ir al mensaje
+    </div>
+    <div class="menu-item" data-accion="responder">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>
+      Responder
+    </div>
+    <div class="menu-item" data-accion="responder-privado">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Responder en privado
+    </div>
+    <div class="menu-item" data-accion="reenviar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 17 20 12 15 7"/><path d="M4 18v-2a4 4 0 0 1 4-4h12"/></svg>
+      Reenviar
+    </div>
+    <div class="menu-item" data-accion="destacar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15 9 22 9 16.5 13.5 18.5 21 12 16.5 5.5 21 7.5 13.5 2 9 9 9"/></svg>
+      Destacar
+    </div>
+    <div class="menu-item eliminar" data-accion="eliminar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+      Eliminar
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <input type="file" id="inputImagen" accept="image/*">
+
+  <script>
+    // ---------- Datos de ejemplo (sin números de teléfono) ----------
+    let documentos = [
+      {
+        id: 1,
+        nombre: "Reunion de padres:Graduación",
+        secciones: "2a",
+        tipo: "Aviso general",
+        comentario: "Caracter urgente",
+        remitente: "María López",
+        fecha: "Ayer a la(s) 7:28 a. m.",
+        grupo: "Ayer",
+        rango: "9 de septiembre de 2026",
+        imagen: null
+      },
+      {
+        id: 2,
+        nombre: "Tus notas ",
+        meta: "Tercer periodo",
+        tipo: "Personal",
+        comentario: "Felicidades vas bien tus materias",
+        remitente: "Andrés Ramírez",
+        fecha: "1/9/2026 a la(s) 11:05 a. m.",
+        grupo: "septiembre",
+        rango: "1–30 de septiembre de 2026",
+        imagen: null
+      },
+      {
+        id: 3,
+        nombre: "Clebración del dia del niño",
+        meta: "Dia del niño",
+        tipo: "doc",
+        comentario: "No faltes tu eres el importante",
+        remitente: "Marta Díaz",
+        fecha: "28/8/2026 a la(s) 8:41 a. m.",
+        grupo: "agosto",
+        rango: "1–31 de agosto de 2026",
+        imagen: null
+      }
+    ];
+
+    let seleccionTodo = false;
+    let filtroBusqueda = "";
+    let ordenDesc = true;
+
+    const overlay = document.getElementById('overlay');
+    const btnAbrir = document.getElementById('btnAbrir');
+    const btnCerrar = document.getElementById('btnCerrar');
+    const listaContenedor = document.getElementById('listaContenedor');
+    const toast = document.getElementById('toast');
+    const searchBar = document.getElementById('searchBar');
+    const inputBusqueda = document.getElementById('inputBusqueda');
+    const inputImagen = document.getElementById('inputImagen');
+    const visorOverlay = document.getElementById('visorOverlay');
+    const imagenGrande = document.getElementById('imagenGrande');
+    const cerrarVisor = document.getElementById('cerrarVisor');
+    const subtitulo = document.getElementById('subtitulo');
+    const menuAcciones = document.getElementById('menuAcciones');
+
+    let tabActiva = 'documentos';
+    let idDocMenuActivo = null;
+
+    function mostrarToast(mensaje){
+      toast.textContent = mensaje;
+      toast.classList.add('mostrar');
+      clearTimeout(mostrarToast._t);
+      mostrarToast._t = setTimeout(() => toast.classList.remove('mostrar'), 2200);
+    }
+
+    function iniciales(nombre){
+      return nombre.split(' ').map(p => p[0]).join('').slice(0,2).toUpperCase();
+    }
+
+    function iconoTipo(tipo){
+      if(tipo === 'pdf'){
+        return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+      }
+      if(tipo === 'audio'){
+        return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`;
+      }
+      return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>`;
+    }
+
+    function renderLista(){
+      let datos = documentos.filter(d => d.nombre.toLowerCase().includes(filtroBusqueda.toLowerCase()));
+
+      // agrupar respetando orden de aparición
+      const grupos = [];
+      const mapaGrupos = {};
+      datos.forEach(doc => {
+        if(!mapaGrupos[doc.grupo]){
+          mapaGrupos[doc.grupo] = { nombre: doc.grupo, rango: doc.rango, items: [] };
+          grupos.push(mapaGrupos[doc.grupo]);
+        }
+        mapaGrupos[doc.grupo].items.push(doc);
+      });
+
+      if(!ordenDesc){
+        grupos.reverse();
+        grupos.forEach(g => g.items.reverse());
+      }
+
+      if(datos.length === 0){
+        listaContenedor.innerHTML = `
+          <div class="estado-vacio">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <p>No se encontraron documentos</p>
+          </div>`;
+        return;
+      }
+
+      let html = '';
+      grupos.forEach(grupo => {
+        html += `
+          <div class="grupo-fecha">
+            <p class="fecha-principal">${grupo.nombre}</p>
+            <p class="fecha-rango">${grupo.rango}</p>
+          </div>`;
+        grupo.items.forEach(doc => {
+          const miniaturaHTML = doc.imagen
+            ? `<img src="${doc.imagen}" alt="${doc.nombre}">`
+            : iconoTipo(doc.tipo);
+          html += `
+            <div class="item-fila" data-id="${doc.id}">
+              <div class="col-doc-fila">
+                <div class="miniatura ${doc.tipo}">${miniaturaHTML}</div>
+                <div class="doc-info">
+                  <div class="nombre">${doc.nombre}</div>
+                  <div class="meta">${doc.meta}</div>
+                </div>
+              </div>
+              <div class="col-com-fila">${doc.comentario}</div>
+              <div class="col-env-fila">
+                <div class="avatar-envio">${iniciales(doc.remitente)}</div>
+                <div class="envio-texto">
+                  <div class="nombre-env">${doc.remitente}</div>
+                  <div class="fecha-env">${doc.fecha}</div>
+                </div>
+              </div>
+              <div class="acciones-fila">
+              
+                <button class="icon-btn btn-expandir" data-id="${doc.id}" title="Más detalles">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+              </div>
+            </div>`;
+        });
+      });
+
+      listaContenedor.innerHTML = html;
+    }
+
+    // Abrir / cerrar modal principal
+    btnAbrir.addEventListener('click', () => {
+      overlay.classList.add('activo');
+      renderLista();
+    });
+
+    btnCerrar.addEventListener('click', () => {
+      overlay.classList.remove('activo');
+      searchBar.classList.remove('activa');
+      filtroBusqueda = '';
+      inputBusqueda.value = '';
+    });
+
+    overlay.addEventListener('click', (e) => {
+      if(e.target === overlay){
+        overlay.classList.remove('activo');
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape'){
+        overlay.classList.remove('activo');
+        visorOverlay.classList.remove('activo');
+        menuAcciones.classList.remove('activo');
+      }
+    });
+
+    // Tabs
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('activo'));
+        tab.classList.add('activo');
+        tabActiva = tab.dataset.tab;
+        if(tabActiva === 'multimedia'){
+          subtitulo.textContent = 'Fotos y videos de todos los chats';
+          mostrarToast('Mostrando archivos multimedia');
+        } else if(tabActiva === 'enlaces'){
+          subtitulo.textContent = 'Enlaces de todos los chats';
+          mostrarToast('Mostrando enlaces');
+        } else {
+          subtitulo.textContent = 'Documentos de todos los chats';
+          mostrarToast('Mostrando documentos');
+        }
+      });
+    });
+
+    // Buscar
+    document.getElementById('btnBuscar').addEventListener('click', () => {
+      searchBar.classList.toggle('activa');
+      if(searchBar.classList.contains('activa')) inputBusqueda.focus();
+    });
+
+    inputBusqueda.addEventListener('input', (e) => {
+      filtroBusqueda = e.target.value;
+      renderLista();
+    });
+
+    // Ordenar
+    document.getElementById('btnOrdenar').addEventListener('click', () => {
+      ordenDesc = !ordenDesc;
+      renderLista();
+      mostrarToast(ordenDesc ? 'Orden: más recientes primero' : 'Orden: más antiguos primero');
+    });
+
+    // Seleccionar todo
+    document.getElementById('btnSeleccionar').addEventListener('click', () => {
+      seleccionTodo = !seleccionTodo;
+      document.querySelectorAll('.item-fila').forEach(fila => {
+        fila.style.background = seleccionTodo ? '#e7f5f0' : '';
+      });
+      mostrarToast(seleccionTodo ? 'Todos los elementos seleccionados' : 'Selección quitada');
+    });
+
+    // Insertar imagen -> abre selector de archivo y la agrega como nuevo documento
+    document.getElementById('btnAgregarImagen').addEventListener('click', () => {
+      inputImagen.click();
+    });
+
+    inputImagen.addEventListener('change', (e) => {
+      const archivo = e.target.files[0];
+      if(!archivo) return;
+      const lector = new FileReader();
+      lector.onload = (ev) => {
+        const nuevoId = Math.max(...documentos.map(d => d.id)) + 1;
+        documentos.unshift({
+          id: nuevoId,
+          nombre: archivo.name,
+          meta: `${Math.round(archivo.size/1024)} KB · IMG`,
+          tipo: 'imagen',
+          comentario: 'Sin comentario',
+          remitente: 'Tú',
+          fecha: 'Ahora',
+          grupo: 'Hoy',
+          rango: new Date().toLocaleDateString('es-ES', { day:'numeric', month:'long', year:'numeric' }),
+          imagen: ev.target.result
+        });
+        renderLista();
+        mostrarToast('Imagen insertada correctamente');
+      };
+      lector.readAsDataURL(archivo);
+      inputImagen.value = '';
+    });
+
+    // Delegación de eventos para filas, descargar, expandir
+    listaContenedor.addEventListener('click', (e) => {
+      const btnDescargar = e.target.closest('.btn-descargar');
+      const btnExpandir = e.target.closest('.btn-expandir');
+      const fila = e.target.closest('.item-fila');
+
+      if(btnDescargar){
+        e.stopPropagation();
+        const doc = documentos.find(d => d.id == btnDescargar.dataset.id);
+        mostrarToast(`Descargando "${doc.nombre}"`);
+        return;
+      }
+
+      if(btnExpandir){
+        e.stopPropagation();
+        idDocMenuActivo = btnExpandir.dataset.id;
+        const rect = btnExpandir.getBoundingClientRect();
+        menuAcciones.style.top = `${rect.bottom + 6}px`;
+        let izquierda = rect.right - 210;
+        if(izquierda < 8) izquierda = 8;
+        menuAcciones.style.left = `${izquierda}px`;
+        menuAcciones.classList.add('activo');
+        return;
+      }
+
+      if(fila){
+        const doc = documentos.find(d => d.id == fila.dataset.id);
+        if(doc.imagen){
+          imagenGrande.src = doc.imagen;
+          visorOverlay.classList.add('activo');
+        } else {
+          mostrarToast(`Abriendo "${doc.nombre}"`);
+        }
+      }
+    });
+
+    // Visor de imagen grande
+    cerrarVisor.addEventListener('click', () => visorOverlay.classList.remove('activo'));
+    visorOverlay.addEventListener('click', (e) => {
+      if(e.target === visorOverlay) visorOverlay.classList.remove('activo');
+    });
+
+    // Menú de acciones (Seleccionar, Ir al mensaje, Responder, etc.)
+    menuAcciones.addEventListener('click', (e) => {
+      const item = e.target.closest('.menu-item');
+      if(!item) return;
+      const accion = item.dataset.accion;
+      const doc = documentos.find(d => d.id == idDocMenuActivo);
+      const nombre = doc ? doc.nombre : '';
+
+      const mensajes = {
+        'seleccionar': `"${nombre}" seleccionado`,
+        'ir-mensaje': `Yendo al mensaje de "${nombre}"`,
+        'responder': `Respondiendo a "${nombre}"`,
+        'responder-privado': `Respondiendo en privado sobre "${nombre}"`,
+        'reenviar': `Reenviando "${nombre}"`,
+        'destacar': `"${nombre}" destacado`,
+        'eliminar': `"${nombre}" eliminado`
+      };
+
+      if(accion === 'eliminar'){
+        documentos = documentos.filter(d => d.id != idDocMenuActivo);
+        renderLista();
+      }
+
+      mostrarToast(mensajes[accion] || 'Acción realizada');
+      menuAcciones.classList.remove('activo');
+    });
+
+    document.addEventListener('click', (e) => {
+      if(menuAcciones.classList.contains('activo') && !menuAcciones.contains(e.target) && !e.target.closest('.btn-expandir')){
+        menuAcciones.classList.remove('activo');
+      }
+    });
+  </script>
+
+
+
+
+      
+      <div class="icon-btnA" id="btnAjustes" title="Ajustes">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.2a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.2a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.2a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9c.2.6.7 1 1.3 1H21a2 2 0 1 1 0 4h-.2a1.6 1.6 0 0 0-1.4 1z"/></svg>
+        
+      </div>
+      <img class="avatar-top" src="Sinfondoinsignia.png" alt="Usuario">
+    </div>
+
+    <div class="content-area container-fluid px-3 px-lg-4 py-4">
+
+      <!-- ===================== INICIO ===================== -->
+      <section class="page-section" id="page-inicio">
+        <div class="page-banner">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/></svg></div>
+          <div><h2>Bienvenido, Marvin López 👋</h2><p>Aquí puedes consultar tu información académica, asistencia, disciplina, horas sociales y los perfiles de la comunidad educativa.</p></div>
+        </div>
+        <div class="inicio-grid">
+          <div class="inicio-card" data-ir="notas">
+            <div class="ic-top"><div class="chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></div><h4>Rendimiento académico</h4></div>
+            <p>Consulta tus notas organizadas en 4 periodos y por materia.</p>
+          </div>
+          <div class="inicio-card" data-ir="asistencias">
+            <div class="ic-top"><div class="chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></div><h4>Asistencia semanal</h4></div>
+            <p>Revisa tu asistencia de la semana, incluyendo los permisos autorizados.</p>
+          </div>
+          <div class="inicio-card" data-ir="faltas">
+            <div class="ic-top"><div class="chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><h4>Disciplina</h4></div>
+            <p>Consulta únicamente las faltas y deméritos registrados en tu perfil.</p>
+          </div>
+          <div class="inicio-card" data-ir="personal">
+            <div class="ic-top"><div class="chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h4>Personal</h4></div>
+            <p>Conoce a tus docentes y a otros miembros de la institución.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== PERFIL ===================== -->
+      <section class="page-section" id="page-perfil">
+        <div class="perfil-banner">
+          <div class="perfil-avatar-wrap">
+            <img src="chelito.webp" alt="Foto del estudiante">
+            <div>
+              <div class="perfil-nombre">Marvin López</div>
+              <div class="perfil-rol">Segundo año · Sección A</div>
+            </div>
+          </div>
+        </div>
+        <div class="perfil-chips">
+          <div class="perfil-chip">
+            <div class="chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div>
+            <div><div class="chip-lbl">Número de lista</div><div class="chip-val">#08</div></div>
+          </div>
+          <div class="perfil-chip">
+            <div class="chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></div>
+            <div><div class="chip-lbl">Grado</div><div class="chip-val">Segundo año</div></div>
+          </div>
+          <div class="perfil-chip">
+            <div class="chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="13" x2="16" y2="13"/></svg></div>
+            <div><div class="chip-lbl">Sección</div><div class="chip-val">A</div></div>
+          </div>
+          <div class="perfil-chip">
+            <div class="chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 3a2 2 0 0 1-.5 2.1L8 10.1a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c1 .3 2 .5 3 .7a2 2 0 0 1 1.6 2Z"/></svg></div>
+            <div><div class="chip-lbl">Teléfono</div><div class="chip-val">6239-5791</div></div>
+          </div>
+          <div class="perfil-chip">
+            <div class="chip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+            <div><div class="chip-lbl">Año lectivo</div><div class="chip-val">2026</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== FALTAS DISCIPLINARIAS ===================== -->
+      <section class="page-section active" id="page-faltas">
+        <div class="page-banner">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+          <div><h2>Faltas disciplinarias</h2><p>Esta sección muestra únicamente las faltas disciplinarias registradas para tu perfil. No se muestran estudiantes de otras secciones.</p></div>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-card">
+              <div class="tc-top"><h4>Falta disciplinaria #1</h4><span class="fecha-pill">12/03/2026</span></div>
+              <div class="tc-fila"><b>Nivel:</b> Falta grave</div>
+              <div class="tc-fila"><b>Motivo:</b> No acatar las órdenes establecidas por el encargado.</div>
+              <div class="tc-fila"><b>Observación:</b> Debe mejorar su comportamiento.</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-card">
+              <div class="tc-top"><h4>Falta disciplinaria #2</h4><span class="fecha-pill">25/04/2026</span></div>
+              <div class="tc-fila"><b>Nivel:</b> Falta leve</div>
+              <div class="tc-fila"><b>Motivo:</b> Incumplimiento de las normas institucionales.</div>
+              <div class="tc-fila"><b>Observación:</b> Se realizó un llamado de atención.</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-card">
+              <div class="tc-top"><h4>Falta disciplinaria #3</h4><span class="fecha-pill">03/06/2026</span></div>
+              <div class="tc-fila"><b>Nivel:</b> Falta muy grave</div>
+              <div class="tc-fila"><b>Motivo:</b> Incumplimiento de una norma de alta gravedad.</div>
+              <div class="tc-fila"><b>Observación:</b> Registro en seguimiento disciplinario.</div>
+            </div>
+          </div>
+        </div>
+        <div class="seccion-titulo" style="font-size:19px; margin-top:22px;">Resumen de mis faltas</div>
+        <div class="stat-strip">
+          <div class="stat-card">
+            <div><div class="stat-num">1</div><div class="stat-lbl">Leves</div></div>
+          </div>
+          <div class="stat-card">
+            <div><div class="stat-num">1</div><div class="stat-lbl">Graves</div></div>
+          </div>
+          <div class="stat-card">
+            <div><div class="stat-num">1</div><div class="stat-lbl">Muy graves</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== DEMÉRITOS ===================== -->
+      <section class="page-section" id="page-demeritos">
+        <div class="page-banner">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 9.5 8.5 3 9l5 4.5L6.5 21 12 17.3 17.5 21 16 13.5l5-4.5-6.5-.5Z"/></svg></div>
+          <div><h2>Deméritos y méritos</h2><p>Aquí consultas tus deméritos: revisa su estado y, cuando hayan sido redimidos, el motivo de la redención.</p></div>
+        </div>
+        <div class="seccion-titulo" style="font-size:19px;">Deméritos</div>
+        <div class="timeline">
+          <div class="timeline-item demerito">
+            <div class="timeline-card">
+              <div class="tc-top"><h4>Demérito #1</h4><span class="fecha-pill amber">15/03/2026</span></div>
+              <div class="tc-fila"><b>Motivo:</b> Incumplimiento de una norma institucional.</div>
+              <div class="tc-fila"><span class="estado-pill pendiente">Pendiente</span></div>
+            </div>
+          </div>
+          <div class="timeline-item demerito">
+            <div class="timeline-card">
+              <div class="tc-top"><h4>Demérito #2</h4><span class="fecha-pill amber">20/05/2026</span></div>
+              <div class="tc-fila"><b>Motivo original:</b> Incumplimiento de actividad.</div>
+              <div class="tc-fila"><span class="estado-pill redimido">✓ Redimido</span></div>
+              <div class="tc-redencion">
+                <div class="tc-fila"><b>Observación del docente:</b> Se evidenció una mejora en su comportamiento y participación.</div>
+                <div class="tc-fila"><b>Motivo de redención:</b> Apoyo en actividades y mostró una actitud positiva.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="seccion-titulo" style="font-size:19px; margin-top:26px;">Méritos</div>
+        <div class="timeline">
+          <div class="timeline-item social">
+            <div class="timeline-card">
+              <div class="tc-top"><h4>Mérito #1</h4><span class="fecha-pill green">10/04/2026</span></div>
+              <div class="tc-fila"><b>Reconocimiento:</b> Excelente participación académica.</div>
+            </div>
+          </div>
+          <div class="timeline-item social">
+            <div class="timeline-card">
+              <div class="tc-top"><h4>Mérito #2</h4><span class="fecha-pill green">02/06/2026</span></div>
+              <div class="tc-fila"><b>Reconocimiento:</b> Buena convivencia escolar.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== NOTAS ===================== -->
+      <section class="page-section" id="page-notas">
+        <div class="page-banner">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></div>
+          <div><h2>Mis notas</h2><p>Marvin López · Lista #08</p></div>
+        </div>
+        <div class="materias-grid">
+          <div class="materia-card">
+            <div class="mc-top"><div class="mc-nombre">Matemática</div><div class="promedio-badge" style="background:var(--ep-blue)">8.85</div></div>
+            <div class="mini-bars">
+              <div class="bar-col"><div class="bar" style="height:85%"></div><div class="bar-val">8.5</div><div class="bar-lbl">P1</div></div>
+              <div class="bar-col"><div class="bar" style="height:90%"></div><div class="bar-val">9.0</div><div class="bar-lbl">P2</div></div>
+              <div class="bar-col"><div class="bar" style="height:87%"></div><div class="bar-val">8.7</div><div class="bar-lbl">P3</div></div>
+              <div class="bar-col"><div class="bar" style="height:92%"></div><div class="bar-val">9.2</div><div class="bar-lbl">P4</div></div>
+            </div>
+          </div>
+          <div class="materia-card">
+            <div class="mc-top"><div class="mc-nombre">Lenguaje</div><div class="promedio-badge" style="background:var(--ep-green)">9.12</div></div>
+            <div class="mini-bars">
+              <div class="bar-col"><div class="bar" style="height:90%"></div><div class="bar-val">9.0</div><div class="bar-lbl">P1</div></div>
+              <div class="bar-col"><div class="bar" style="height:88%"></div><div class="bar-val">8.8</div><div class="bar-lbl">P2</div></div>
+              <div class="bar-col"><div class="bar" style="height:92%"></div><div class="bar-val">9.2</div><div class="bar-lbl">P3</div></div>
+              <div class="bar-col"><div class="bar" style="height:95%"></div><div class="bar-val">9.5</div><div class="bar-lbl">P4</div></div>
+            </div>
+          </div>
+          <div class="materia-card">
+            <div class="mc-top"><div class="mc-nombre">Ciencias Naturales</div><div class="promedio-badge" style="background:var(--ep-blue)">8.57</div></div>
+            <div class="mini-bars">
+              <div class="bar-col"><div class="bar" style="height:80%"></div><div class="bar-val">8.0</div><div class="bar-lbl">P1</div></div>
+              <div class="bar-col"><div class="bar" style="height:85%"></div><div class="bar-val">8.5</div><div class="bar-lbl">P2</div></div>
+              <div class="bar-col"><div class="bar" style="height:90%"></div><div class="bar-val">9.0</div><div class="bar-lbl">P3</div></div>
+              <div class="bar-col"><div class="bar" style="height:88%"></div><div class="bar-val">8.8</div><div class="bar-lbl">P4</div></div>
+            </div>
+          </div>
+          <div class="materia-card">
+            <div class="mc-top"><div class="mc-nombre">Estudios Sociales</div><div class="promedio-badge" style="background:var(--ep-green)">9.15</div></div>
+            <div class="mini-bars">
+              <div class="bar-col"><div class="bar" style="height:92%"></div><div class="bar-val">9.2</div><div class="bar-lbl">P1</div></div>
+              <div class="bar-col"><div class="bar" style="height:89%"></div><div class="bar-val">8.9</div><div class="bar-lbl">P2</div></div>
+              <div class="bar-col"><div class="bar" style="height:91%"></div><div class="bar-val">9.1</div><div class="bar-lbl">P3</div></div>
+              <div class="bar-col"><div class="bar" style="height:94%"></div><div class="bar-val">9.4</div><div class="bar-lbl">P4</div></div>
+            </div>
+          </div>
+          <div class="materia-card">
+            <div class="mc-top"><div class="mc-nombre">Inglés</div><div class="promedio-badge" style="background:var(--ep-blue)">8.92</div></div>
+            <div class="mini-bars">
+              <div class="bar-col"><div class="bar" style="height:87%"></div><div class="bar-val">8.7</div><div class="bar-lbl">P1</div></div>
+              <div class="bar-col"><div class="bar" style="height:89%"></div><div class="bar-val">8.9</div><div class="bar-lbl">P2</div></div>
+              <div class="bar-col"><div class="bar" style="height:90%"></div><div class="bar-val">9.0</div><div class="bar-lbl">P3</div></div>
+              <div class="bar-col"><div class="bar" style="height:91%"></div><div class="bar-val">9.1</div><div class="bar-lbl">P4</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="reposicion-nota">
+          <div class="rn-titulo">Reposición</div>
+          <div>Estas materias tienen un promedio menor a 6.0 y requieren reposición.</div>
+          <div class="rn-ok">✓ No tienes materias con promedio menor a 6.0. Por el momento no tienes reposición pendiente.</div>
+        </div>
+      </section>
+
+      <!-- ===================== ASISTENCIAS ===================== -->
+      <section class="page-section" id="page-asistencias">
+        <div class="page-banner">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="m9 16 2 2 4-4"/></svg></div>
+          <div><h2>Mi asistencia</h2><p>Semana del 17 al 21 de agosto de 2026 · Marvin López #08</p></div>
+        </div>
+        <div class="stat-strip">
+          <div class="stat-card">
+            <div class="stat-icon bg-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div><div class="stat-num">3</div><div class="stat-lbl">Días asistidos</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon bg-red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+            <div><div class="stat-num">1</div><div class="stat-lbl">Faltas</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon bg-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg></div>
+            <div><div class="stat-num">1</div><div class="stat-lbl">Permisos</div></div>
+          </div>
+        </div>
+        <div class="dias-strip">
+          <div class="dia-card ok">
+            <div class="dia-nombre">Lunes</div><div class="dia-fecha">17/08/2026</div>
+            <div class="icono-estado ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div class="dia-obs">Presente</div>
+          </div>
+          <div class="dia-card ok">
+            <div class="dia-nombre">Martes</div><div class="dia-fecha">18/08/2026</div>
+            <div class="icono-estado ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div class="dia-obs">Presente</div>
+          </div>
+          <div class="dia-card mal">
+            <div class="dia-nombre">Miércoles</div><div class="dia-fecha">19/08/2026</div>
+            <div class="icono-estado mal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+            <div class="dia-obs">Falta registrada</div>
+          </div>
+          <div class="dia-card permiso">
+            <div class="dia-nombre">Jueves</div><div class="dia-fecha">20/08/2026</div>
+            <div class="icono-estado permiso"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></div>
+            <div class="dia-obs">Permiso autorizado</div>
+          </div>
+          <div class="dia-card ok">
+            <div class="dia-nombre">Viernes</div><div class="dia-fecha">21/08/2026</div>
+            <div class="icono-estado ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div class="dia-obs">Presente</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== HORAS SOCIALES ===================== -->
+      <section class="page-section" id="page-horas">
+        <div class="page-banner">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg></div>
+          <div><h2>Horas sociales</h2><p>Marvin López · Lista #08</p></div>
+        </div>
+        <div class="horas-card">
+          <div class="progreso-ring" style="--pct:65">
+            <div class="ring-inner"><div class="num">65</div><div class="den">/ 100 h</div></div>
+          </div>
+          <div class="horas-info">
+            <div class="horas-nom">Horas sociales realizadas</div>
+            <div class="horas-lista">Marvin López · Lista #08</div>
+            <span class="estado-badge">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+              En proceso
+            </span>
+          </div>
+        </div>
+        <div class="seccion-titulo">Actividades registradas</div>
+        <div class="timeline">
+          <div class="timeline-item social">
+            <div class="timeline-card">
+              <div class="tc-top"><h4>Limpieza institucional</h4><span class="fecha-pill green">10/03/2026</span></div>
+              <div class="tc-fila"><b>Institución:</b> Institución educativa</div>
+              <div class="tc-fila"><b>Horas:</b> 10 · Completada</div>
+            </div>
+          </div>
+          <div class="timeline-item social">
+            <div class="timeline-card">
+              <div class="tc-top"><h4>Actividad comunitaria</h4><span class="fecha-pill green">18/04/2026</span></div>
+              <div class="tc-fila"><b>Institución:</b> Comunidad</div>
+              <div class="tc-fila"><b>Horas:</b> 15 · Completada</div>
+            </div>
+          </div>
+          <div class="timeline-item social">
+            <div class="timeline-card">
+              <div class="tc-top"><h4>Apoyo escolar</h4><span class="fecha-pill green">05/05/2026</span></div>
+              <div class="tc-fila"><b>Institución:</b> Institución educativa</div>
+              <div class="tc-fila"><b>Horas:</b> 20 · Completada</div>
+            </div>
+          </div>
+          <div class="timeline-item social">
+            <div class="timeline-card">
+              <div class="tc-top"><h4>Apoyo en biblioteca</h4><span class="fecha-pill green">15/06/2026</span></div>
+              <div class="tc-fila"><b>Institución:</b> Institución educativa</div>
+              <div class="tc-fila"><b>Horas:</b> 20 · Completada</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== PERSONAL DE LA INSTITUCIÓN ===================== -->
+      <section class="page-section" id="page-personal">
+        <div class="page-banner">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div><h2>Personal de la institución</h2><p>Consulta los perfiles del personal docente y de los demás miembros de la institución. La información es de solo lectura.</p></div>
+        </div>
+        <div class="personal-tabs">
+          <div class="personal-tab active" data-tab="docentes">Docentes</div>
+          <div class="personal-tab" data-tab="miembros">Miembros de la institución</div>
+        </div>
+        <div class="personal-grid active" id="tab-docentes">
+          <div class="persona-card">
+            <div class="persona-avatar">MH</div>
+            <div><h4>María Hernández</h4>
+              <div class="tc-fila"><b>Cargo:</b> Docente</div>
+              <div class="tc-fila"><b>Materia:</b> Matemática</div>
+              <div class="tc-fila"><b>Contacto:</b> 7123-4589</div>
+            </div>
+          </div>
+          <div class="persona-card">
+            <div class="persona-avatar">CM</div>
+            <div><h4>Carlos Martínez</h4>
+              <div class="tc-fila"><b>Cargo:</b> Docente</div>
+              <div class="tc-fila"><b>Materia:</b> Lenguaje</div>
+              <div class="tc-fila"><b>Contacto:</b> 7456-2198</div>
+            </div>
+          </div>
+          <div class="persona-card">
+            <div class="persona-avatar">AR</div>
+            <div><h4>Ana Ramírez</h4>
+              <div class="tc-fila"><b>Cargo:</b> Docente</div>
+              <div class="tc-fila"><b>Materia:</b> Ciencias Naturales</div>
+              <div class="tc-fila"><b>Contacto:</b> 7689-3012</div>
+            </div>
+          </div>
+          <div class="persona-card">
+            <div class="persona-avatar">JC</div>
+            <div><h4>José Castillo</h4>
+              <div class="tc-fila"><b>Cargo:</b> Docente</div>
+              <div class="tc-fila"><b>Materia:</b> Estudios Sociales</div>
+              <div class="tc-fila"><b>Contacto:</b> 7345-8821</div>
+            </div>
+          </div>
+        </div>
+        <div class="personal-grid" id="tab-miembros">
+          <div class="persona-card">
+            <div class="persona-avatar">PG</div>
+            <div><h4>Patricia Gómez</h4>
+              <div class="tc-fila"><b>Cargo:</b> Directora</div>
+              <div class="tc-fila"><b>Área:</b> Dirección</div>
+              <div class="tc-fila"><b>Contacto:</b> 7001-2456</div>
+            </div>
+          </div>
+          <div class="persona-card">
+            <div class="persona-avatar">RP</div>
+            <div><h4>Roberto Pérez</h4>
+              <div class="tc-fila"><b>Cargo:</b> Subdirector</div>
+              <div class="tc-fila"><b>Área:</b> Subdirección</div>
+              <div class="tc-fila"><b>Contacto:</b> 7112-6634</div>
+            </div>
+          </div>
+          <div class="persona-card">
+            <div class="persona-avatar">LT</div>
+            <div><h4>Lucía Torres</h4>
+              <div class="tc-fila"><b>Cargo:</b> Secretaria</div>
+              <div class="tc-fila"><b>Área:</b> Administración</div>
+              <div class="tc-fila"><b>Contacto:</b> 7234-5190</div>
+            </div>
+          </div>
+          <div class="persona-card">
+            <div class="persona-avatar">DF</div>
+            <div><h4>Daniel Flores</h4>
+              <div class="tc-fila"><b>Cargo:</b> Orientador</div>
+              <div class="tc-fila"><b>Área:</b> Orientación estudiantil</div>
+              <div class="tc-fila"><b>Contacto:</b> 7567-2043</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <script>
+    // ===================== Navegación entre pantallas del menú =====================
+    (function(){
+      const navItems = document.querySelectorAll('.nav-item[data-page]');
+      const pageSections = document.querySelectorAll('.page-section');
+      const btnHome = document.getElementById('btnHome');
+
+      function mostrarPagina(pageId, itemEl){
+        pageSections.forEach(sec => sec.classList.remove('active'));
+        const objetivo = document.getElementById('page-' + pageId);
+        if(objetivo) objetivo.classList.add('active');
+
+        navItems.forEach(n => n.classList.remove('active'));
+        if(itemEl) itemEl.classList.add('active');
+      }
+
+      navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
+          mostrarPagina(item.dataset.page, item);
+        });
+      });
+
+      // Al hacer clic en la foto/nombre del profesor, regresa a la pantalla de inicio
+      if(btnHome){
+        btnHome.addEventListener('click', () => {
+          mostrarPagina('inicio', document.querySelector('.nav-item[data-page="inicio"]'));
+        });
+      }
+
+      // Las tarjetas de la pantalla de Inicio llevan directamente a su sección
+      document.querySelectorAll('.inicio-card[data-ir]').forEach(card => {
+        card.addEventListener('click', () => {
+          const destino = card.dataset.ir;
+          mostrarPagina(destino, document.querySelector('.nav-item[data-page="' + destino + '"]'));
+        });
+      });
+
+      // Pestañas de "Personal de la institución": Docentes / Miembros
+      document.querySelectorAll('.personal-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.personal-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          document.querySelectorAll('.personal-grid').forEach(g => g.classList.remove('active'));
+          const destino = document.getElementById('tab-' + tab.dataset.tab);
+          if(destino) destino.classList.add('active');
+        });
+      });
+
+      // Estado inicial: se muestra "Faltas disciplinarias" porque es el ítem
+      // marcado como activo en el menú.
+      mostrarPagina('faltas', document.querySelector('.nav-item[data-page="faltas"]'));
+    })();
+  </script>
+
+  <!-- ===================== Lógica de la pantalla de Ajustes ===================== -->
+  <script>
+    (function(){
+      const btnAjustes = document.getElementById('btnAjustes');
+      const ovAjustes = document.getElementById('ovAjustes');
+      const btnCerrarAjustes = document.getElementById('btnCerrarAjustes');
+      const chkModoOscuro = document.getElementById('chkModoOscuro');
+      const selTamanoTexto = document.getElementById('selTamanoTexto');
+      const chkNotificaciones = document.getElementById('chkNotificaciones');
+      const chkSonido = document.getElementById('chkSonido');
+      const selIdioma = document.getElementById('selIdioma');
+
+      const CLAVE = 'ajustesApp';
+
+      function cargarAjustes(){
+        try{
+          const guardado = JSON.parse(localStorage.getItem(CLAVE) || '{}');
+          if(guardado.modoOscuro){
+            chkModoOscuro.checked = true;
+            document.body.classList.add('modo-oscuro');
+          }
+          if(guardado.tamanoTexto){
+            selTamanoTexto.value = guardado.tamanoTexto;
+            aplicarTamanoTexto(guardado.tamanoTexto);
+          }
+          if(typeof guardado.notificaciones === 'boolean'){
+            chkNotificaciones.checked = guardado.notificaciones;
+          }
+          if(typeof guardado.sonido === 'boolean'){
+            chkSonido.checked = guardado.sonido;
+          }
+          if(guardado.idioma){
+            selIdioma.value = guardado.idioma;
+          }
+        }catch(e){ /* si no hay ajustes guardados, se usan los valores por defecto */ }
+      }
+
+      function guardarAjustes(){
+        const datos = {
+          modoOscuro: chkModoOscuro.checked,
+          tamanoTexto: selTamanoTexto.value,
+          notificaciones: chkNotificaciones.checked,
+          sonido: chkSonido.checked,
+          idioma: selIdioma.value
+        };
+        try{ localStorage.setItem(CLAVE, JSON.stringify(datos)); }catch(e){}
+      }
+
+      function aplicarTamanoTexto(valor){
+        document.body.classList.remove('texto-grande', 'texto-pequeno');
+        if(valor === 'grande') document.body.classList.add('texto-grande');
+        if(valor === 'pequeno') document.body.classList.add('texto-pequeno');
+      }
+
+      // Abrir / cerrar la pantalla emergente de ajustes
+      btnAjustes.addEventListener('click', () => {
+        ovAjustes.classList.add('activo');
+      });
+
+      btnCerrarAjustes.addEventListener('click', () => {
+        ovAjustes.classList.remove('activo');
+      });
+
+      ovAjustes.addEventListener('click', (e) => {
+        if(e.target === ovAjustes) ovAjustes.classList.remove('activo');
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape') ovAjustes.classList.remove('activo');
+      });
+
+      // Modo oscuro
+      chkModoOscuro.addEventListener('change', () => {
+        document.body.classList.toggle('modo-oscuro', chkModoOscuro.checked);
+        guardarAjustes();
+      });
+
+      // Tamaño de texto
+      selTamanoTexto.addEventListener('change', () => {
+        aplicarTamanoTexto(selTamanoTexto.value);
+        guardarAjustes();
+      });
+
+      // El resto de opciones solo se guardan (notificaciones, sonido, idioma)
+      [chkNotificaciones, chkSonido, selIdioma].forEach(el => {
+        el.addEventListener('change', guardarAjustes);
+      });
+
+      cargarAjustes();
+    })();
+  </script>
+
+  <!-- ===================== Menú lateral desplegable en móvil ===================== -->
+  <script>
+    (function(){
+      const sidebar = document.getElementById('sidebarMenu');
+      const btnHamburguesa = document.getElementById('btnHamburguesa');
+      const backdrop = document.getElementById('sidebarBackdrop');
+
+      function abrirMenu(){
+        sidebar.classList.add('abierto');
+        backdrop.classList.add('activo');
+      }
+      function cerrarMenu(){
+        sidebar.classList.remove('abierto');
+        backdrop.classList.remove('activo');
+      }
+
+      btnHamburguesa.addEventListener('click', () => {
+        if(sidebar.classList.contains('abierto')) cerrarMenu();
+        else abrirMenu();
+      });
+
+      backdrop.addEventListener('click', cerrarMenu);
+
+      document.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape') cerrarMenu();
+      });
+
+      // Cierra el menú al elegir una opción o al tocar el perfil (en móvil)
+      sidebar.querySelectorAll('.nav-item, .profile-block').forEach(el => {
+        el.addEventListener('click', () => {
+          if(window.innerWidth <= 980) cerrarMenu();
+        });
+      });
+
+      // Si la pantalla vuelve a un tamaño grande, aseguramos que el menú quede visible normal
+      window.addEventListener('resize', () => {
+        if(window.innerWidth > 980) cerrarMenu();
+      });
+    })();
+  </script>
+
+  <script src="/account.js" defer></script>
+<style>
+  :root{--school-ink:#1b3444;--school-muted:#647985;--school-line:#e3ebee;--school-green:#176b58;--school-canvas:#f3f7f8}
+  body{background:var(--school-canvas);color:var(--school-ink);font-family:Inter,"Segoe UI",sans-serif}
+  .sidebar{width:264px;flex-basis:264px;padding:18px 14px 24px;background:linear-gradient(180deg,#153b52,#102d42);border:0;box-shadow:8px 0 28px rgba(16,45,66,.08);font-size:1rem}
+  .profile-block{padding:8px 8px 18px;border-color:rgba(255,255,255,.15)}
+  .profile-block img{height:100px;border-radius:16px}
+  .profile-block .name{color:#e6fff5;font-size:18px}
+  .profile-block .role{color:#bdd2dc;font-size:13px}
+  .nav-label{color:#9db8c3;font-size:11px;letter-spacing:1.1px}
+  .nav-item{width:100%;min-height:44px;margin:3px 0;padding:9px 12px;border-radius:11px;color:#e4eef2;font-size:14px;transition:background .18s,color .18s}
+  .nav-item:hover{width:100%;background:rgba(136,224,194,.16);color:#b8f4da}
+  .nav-item.active{background:rgba(136,224,194,.16);color:#b8f4da}
+  .nav-item img,.nav-item svg{width:24px;height:24px;object-fit:contain}
+  .main{max-width:none;min-width:0;background:var(--school-canvas)}
+  .topbar{position:sticky;top:0;z-index:5;min-height:68px;padding:12px clamp(16px,3vw,30px);background:rgba(255,255,255,.96);border-bottom:1px solid var(--school-line);box-shadow:0 4px 16px rgba(31,66,83,.04)}
+  .btn-hamburguesa{border-color:#dce7ea;color:var(--school-green)}
+  .team-pill{border-color:var(--school-line);background:#f7fafb;color:#506a77}
+  .content-area{width:100%;padding:clamp(14px,2.5vw,30px)}
+  .content-area>.page-section,.content-area>.hero-row{padding:clamp(16px,2.6vw,30px);border:1px solid var(--school-line);border-radius:18px;background:#fff;box-shadow:0 8px 28px rgba(28,64,80,.055)}
+  .page-banner{border-radius:15px;background:linear-gradient(120deg,#153b52,#176b58);box-shadow:0 12px 24px -14px rgba(13,54,65,.5)}
+  .page-banner h2{font-size:20px}.page-banner p{color:#d1e7e2}
+  .stat-card,.sc-card,.panel-admin .card,.panel-admin .box{border:1px solid var(--school-line);border-radius:15px;box-shadow:0 7px 22px rgba(28,64,80,.06)}
+  .stat-card{box-shadow:0 7px 22px rgba(28,64,80,.06)}
+  .sc-btn,.panel-admin button{border-radius:10px;transition:transform .16s,box-shadow .16s}
+  .sc-btn:hover,.panel-admin button:hover{transform:translateY(-1px);box-shadow:0 6px 15px rgba(22,75,76,.12)}
+  .panel-admin input,.panel-admin select,.panel-admin textarea{max-width:100%;border-color:#d4e0e4;border-radius:10px}
+  .panel-admin input:focus,.panel-admin select:focus,.panel-admin textarea:focus{outline:0;border-color:#2b8b70;box-shadow:0 0 0 3px rgba(43,139,112,.14)}
+  .panel-admin .grid{gap:16px}
+  :focus-visible{outline:3px solid rgba(43,139,112,.4);outline-offset:2px}
+  @media(max-width:900px){.content-area{padding:14px}.content-area>.page-section,.content-area>.hero-row{padding:16px}.page-banner{flex-direction:row;align-items:center}}
+  @media(max-width:480px){.page-banner{gap:11px}.page-banner .icon-badge{width:42px;height:42px}.page-banner h2{font-size:17px}.page-banner p{font-size:12px}.stat-strip{grid-template-columns:1fr}}
+</style>
+</body>
+</html>
